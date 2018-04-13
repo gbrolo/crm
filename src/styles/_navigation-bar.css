@@ -1,0 +1,151 @@
+/**
+ * Navigation Bar
+ */
+
+/* Font Face */
+ @font-face {
+    font-family: Roboto;
+    src: url("../res/fonts/Roboto/Roboto-Black.ttf");
+}
+
+@font-face {
+    font-family: Lato;
+    src: url("../res/fonts/Lato/Lato-Black.ttf");
+}
+
+@font-face {
+    font-family: Open-Sans;
+    src: url("../res/fonts/Open_Sans/OpenSans-Bold.ttf");
+}
+
+@font-face {
+    font-family: Roboto-Light;
+    src: url("../res/fonts/Roboto/Roboto-Light.ttf");
+}
+
+/* Styling */
+
+html {
+  background-color: #f0f0f0;
+}
+
+.header {
+    position: relative;
+    z-index: 10000;
+}
+
+.navigation-container {
+  font-family: Open-Sans, sans-serif;
+  display: block;
+  color: #ffffff;
+  background: #2e3e4e;
+  position: fixed;
+  width: 220px;
+  height: 100%;
+  float: left;
+}
+
+.nav-title-logo {
+  font-size: 1.8em;
+  background: #273543;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  text-align: center;
+}
+
+.nav-title {
+  font-size: 1.8em;
+  background: #0b3654;
+  height: 60px;
+  text-align: center;
+}
+
+.nav-title-container {
+  margin-bottom: 20px;
+  margin-top: 0;
+  box-shadow: 0 15px 5px -5px #2b3a49;
+}
+
+.navigation-container ul {
+  font-family: Open-Sans, sans-serif;
+  list-style-type: none;
+  padding-left: 0px;
+  text-align: left;
+  text-shadow: 1px 1px 15px #181818;
+  font-size: 0.8em;
+
+}
+
+.navigation-container a {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.navigation-container li {
+    text-transform: uppercase;
+    padding: 20px;
+    width: 220px;
+    font-weight: 200;
+    color: #a7aeb5;
+}
+
+.navigation-container li a {
+  text-decoration: none;
+  color: #fff;
+}
+
+.navigation-container li:hover {
+  background-color: #2b3a49;
+  color: #fff;
+  text-decoration: none;
+}
+
+.navigation-container li#selected {
+  background-color: #0b3654;
+}
+
+.navigation-container li#dropdown {
+  font-weight: 200;
+  font-size: 0.8em;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 35px;
+  color: #a7aeb5;
+}
+
+.navigation-container li#dropdown:hover {
+  background: #fff;
+  color: #a88add;
+}
+
+.navigation-container li#dropdown a {
+  color: #a7aeb5;
+}
+
+.navigation-container li#dropdown a:hover {
+  color: #a88add;
+}
+
+.dropdown {
+  display: inline-block;
+}
+
+.dropdown__content {
+  display: none;
+  position: relative;
+}
+
+.dropdown--active .dropdown__content {
+  display: block;
+}
+
+.navbar-footer {
+  position: absolute;
+  bottom: 0;
+  font-family: Roboto-Light, sans-serif;
+  font-size: 0.8em;
+  padding: 20px;
+  background: #273543;
+  width: 100%;
+  text-align: center;
+}

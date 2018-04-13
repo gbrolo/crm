@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-class Home extends Component {
+class ShowCatalogue extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -11,11 +11,11 @@ class Home extends Component {
   render() {
     return (
       <div>
-        Home
+        ShowCatalogue
       </div>
     )
   }
 }
 
 function mapStateToProps(state){ return {} }
-export default connect(mapStateToProps, null)(Home);
+export default connect(mapStateToProps, null)(ShowCatalogue);
