@@ -6,6 +6,7 @@ import { Button, FormGroup, FormControl, InputGroup, Grid, Row, Col } from 'reac
 
 // Styles
 import '../../../styles/_layout.css';
+import '../../../styles/_buttons.css';
 import '../../../styles/_addclient.css';
 import 'react-flags-select/css/react-flags-select.css';
 
@@ -35,9 +36,14 @@ class AddClient extends Component {
   OnChangeTwitterHandle = twitter => this.setState({ twitter })
   OnChangeLinkedInHandle = linkedin => this.setState({ linkedin })
 
+  createUser() {
+    console.log(this.state);
+  }
+
   render() {
     return (
       <div className="layout-scene-wrapper">
+      <form onSubmit = { () => this.createUser() }>
         <div className="addclient-fillinfo">
           <Grid>
             <Row>
@@ -151,7 +157,6 @@ class AddClient extends Component {
                    <InputGroup className="addclient-form-input-element">
                      <FormControl type="text" placeholder="/username" className="addclient-form-input-control"
                      onChange={(event) => this.OnChangeTwitterHandle(event.target.value)}
-                     required
                      />
                    </InputGroup>
                 </FormGroup>
@@ -163,15 +168,19 @@ class AddClient extends Component {
                    <InputGroup className="addclient-form-input-element">
                      <FormControl type="text" placeholder="/username" className="addclient-form-input-control"
                      onChange={(event) => this.OnChangeLinkedInHandle(event.target.value)}
-                     required
                      />
                    </InputGroup>
                 </FormGroup>
+
+                <div>
+                   <Button type="submit" className="button-prim" block>Add user</Button>
+                </div>
 
               </Col>
             </Row>
           </Grid>
         </div>
+        </form>
       </div>
     )
   }
