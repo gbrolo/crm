@@ -32,8 +32,7 @@ class NavBar extends Component {
             </DropdownTrigger>
             <DropdownContent>
               <li id="dropdown"><i className="fa fa-plus" aria-hidden="true"></i><Link to='/clients/add'> Add client</Link></li>
-              <li id="dropdown"><i className="fa fa-edit" aria-hidden="true"></i><Link to='/clients/update'> Update client</Link></li>
-              <li id="dropdown"><i className="fa fa-trash" aria-hidden="true"></i><Link to='/clients/remove'> Remove client</Link></li>
+              <li id="dropdown"><i className="fa fa-edit" aria-hidden="true"></i><Link to='/clients/update'> Edit clients</Link></li>          
             </DropdownContent>
           </Dropdown>
           <Dropdown>

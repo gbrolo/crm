@@ -21,6 +21,11 @@ const selectRow ={
   }
 };
 
+function validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+};
+
 class UpdateClient extends Component {
   constructor(props) {
     super(props);
@@ -30,22 +35,122 @@ class UpdateClient extends Component {
         text: 'ID'
       }, {
         dataField: 'name',
-        text: 'Name'
+        text: 'Name',
+        validator: (newValue, row, column) => {
+          if (newValue === "") {
+            alert('Field must not be empty');
+            return {
+              valid: false,
+              message: 'Field must not be empty'
+            };
+          }
+          if (isNaN(typeof parseInt(newValue)) === false) {
+            alert('Field must have a text value');
+            return {
+              valid: false,
+              message: 'Field must have a text value'
+            };
+          }
+          return true;
+        }
       }, {
         dataField: 'email',
-        text: 'Email'
+        text: 'Email',
+        validator: (newValue, row, column) => {
+          if (newValue === "") {
+            alert('Field must not be empty');
+            return {
+              valid: false,
+              message: 'Field must not be empty'
+            };
+          }
+          if (isNaN(typeof parseInt(newValue)) === false) {
+            alert('Field must have a text value');
+            return {
+              valid: false,
+              message: 'Field must have a text value'
+            };
+          } else if (validateEmail(newValue) === false) {
+            alert('Please enter a valid email');
+            return {
+              valid: false,
+              message: 'Please enter a valid email'
+            };
+          }
+          return true;
+        }
       }, {
         dataField: 'sex',
-        text: 'Sex'
+        text: 'Sex',
+        validator: (newValue, row, column) => {
+          if (newValue === "") {
+            return {
+              valid: false,
+              message: 'Field must not be empty'
+            };
+          }
+          if (isNaN(typeof parseInt(newValue)) === false) {
+            return {
+              valid: false,
+              message: 'Field must have a text value'
+            };
+          }
+          return true;
+        }
       }, {
         dataField: 'civstate',
-        text: 'Civil State'
+        text: 'Civil State',
+        validator: (newValue, row, column) => {
+          if (newValue === "") {
+            return {
+              valid: false,
+              message: 'Field must not be empty'
+            };
+          }
+          if (isNaN(typeof parseInt(newValue)) === false) {
+            return {
+              valid: false,
+              message: 'Field must have a text value'
+            };
+          }
+          return true;
+        }
       }, {
         dataField: 'birthDate',
-        text: 'Birth Date'
+        text: 'Birth Date',
+        validator: (newValue, row, column) => {
+          if (newValue === "") {
+            return {
+              valid: false,
+              message: 'Field must not be empty'
+            };
+          }
+          if (isNaN(typeof parseInt(newValue)) === false) {
+            return {
+              valid: false,
+              message: 'Field must have a text value'
+            };
+          }
+          return true;
+        }
       }, {
         dataField: 'country',
-        text: 'Country'
+        text: 'Country',
+        validator: (newValue, row, column) => {
+          if (newValue === "") {
+            return {
+              valid: false,
+              message: 'Field must not be empty'
+            };
+          }
+          if (isNaN(typeof parseInt(newValue)) === false) {
+            return {
+              valid: false,
+              message: 'Field must have a text value'
+            };
+          }
+          return true;
+        }
       }],
 
       userTable: [
