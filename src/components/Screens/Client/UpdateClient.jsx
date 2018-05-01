@@ -4,31 +4,30 @@ import { Button, Grid, Row, Col } from 'react-bootstrap';
 
 import BootstrapTable from 'react-bootstrap-table-next';
 import cellEditFactory from 'react-bootstrap-table2-editor';
+import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
 
 // Styles
 import '../../../styles/_layout.css';
 import '../../../styles/_buttons.css';
 import '../../../styles/_updateclient.css';
 
-const selectRow ={
-  mode: 'radio',
-  hideSelectColumn: true,
-  clickToSelect: true,
-  clickToEdit: true,
-  style: { backgroundColor: '#c8e6c9' },
-  onSelect: (row, isSelect, rowIndex, e) => {
-    localStorage.setItem('selectedRow', JSON.stringify(row));
-  }
-};
-
 function validateEmail(email) {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
 };
 
+function validateDate(date) {
+    var re = /(\d{4})-(\d{2})-(\d{2})/;
+    return re.test(String(date).toLowerCase());
+};
+
 class UpdateClient extends Component {
   constructor(props) {
     super(props);
+
+    const selectedArray = [];
+    localStorage.setItem('selectedArray', JSON.stringify(selectedArray));
+
     this.state = {
       columns: [{
         dataField: 'id',
@@ -36,6 +35,7 @@ class UpdateClient extends Component {
       }, {
         dataField: 'name',
         text: 'Name',
+        filter: textFilter(),
         validator: (newValue, row, column) => {
           if (newValue === "") {
             alert('Field must not be empty');
@@ -56,6 +56,7 @@ class UpdateClient extends Component {
       }, {
         dataField: 'email',
         text: 'Email',
+        filter: textFilter({caseSensitive: true}),
         validator: (newValue, row, column) => {
           if (newValue === "") {
             alert('Field must not be empty');
@@ -64,13 +65,7 @@ class UpdateClient extends Component {
               message: 'Field must not be empty'
             };
           }
-          if (isNaN(typeof parseInt(newValue)) === false) {
-            alert('Field must have a text value');
-            return {
-              valid: false,
-              message: 'Field must have a text value'
-            };
-          } else if (validateEmail(newValue) === false) {
+          if (validateEmail(newValue) === false) {
             alert('Please enter a valid email');
             return {
               valid: false,
@@ -82,17 +77,22 @@ class UpdateClient extends Component {
       }, {
         dataField: 'sex',
         text: 'Sex',
+        filter: textFilter({caseSensitive: true}),
         validator: (newValue, row, column) => {
           if (newValue === "") {
+            alert('Field must not be empty');
             return {
               valid: false,
               message: 'Field must not be empty'
             };
           }
-          if (isNaN(typeof parseInt(newValue)) === false) {
+          if (newValue.toLowerCase() === "m" || newValue.toLowerCase() === "f") {
+            // do nothing
+          } else {
+            alert('Only valid inputs are M for male and F for female');
             return {
               valid: false,
-              message: 'Field must have a text value'
+              message: 'Only valid inputs are M for male and F for female'
             };
           }
           return true;
@@ -102,15 +102,20 @@ class UpdateClient extends Component {
         text: 'Civil State',
         validator: (newValue, row, column) => {
           if (newValue === "") {
+            alert('Field must not be empty');
             return {
               valid: false,
               message: 'Field must not be empty'
             };
           }
-          if (isNaN(typeof parseInt(newValue)) === false) {
+          if (newValue.toLowerCase() === "single" || newValue.toLowerCase() === "married"
+                || newValue.toLowerCase() === "widow" || newValue.toLowerCase() === "divorced") {
+            // do nothing
+          } else {
+            alert('Only valid inputs are single, married, widow or divorced');
             return {
               valid: false,
-              message: 'Field must have a text value'
+              message: 'Only valid inputs are single, married, widow or divorced'
             };
           }
           return true;
@@ -120,15 +125,17 @@ class UpdateClient extends Component {
         text: 'Birth Date',
         validator: (newValue, row, column) => {
           if (newValue === "") {
+            alert('Field must not be empty');
             return {
               valid: false,
               message: 'Field must not be empty'
             };
           }
-          if (isNaN(typeof parseInt(newValue)) === false) {
+          if (validateDate(newValue) === false) {
+            alert('Please enter a date in format YYYY-MM-DD');
             return {
               valid: false,
-              message: 'Field must have a text value'
+              message: 'Please enter a date in format YYYY-MM-DD'
             };
           }
           return true;
@@ -181,7 +188,9 @@ class UpdateClient extends Component {
           birthDate: "1997-05-02",
           country: "Japan"
         }
-      ]
+      ],
+
+      update: []
     }
   }
 
@@ -200,15 +209,73 @@ class UpdateClient extends Component {
     this.setState({ userTable });
 
     // set just a row to update
-    localStorage.setItem('rowToUpdate', JSON.stringify(row));
+    //localStorage.setItem('rowToUpdate', JSON.stringify(row));
+
+    // add to update array
+    this.addToUpdate(row);
   }
 
-  sendData() {
-    var rowToSend = JSON.parse(localStorage.getItem('rowToUpdate'));
-    console.log('row is', rowToSend);
+  updateData() {
+    //var rowToSend = JSON.parse(localStorage.getItem('rowToUpdate'));
+    //console.log('row is', rowToSend);
+
+    // this is the update array to send to api
+    console.log('update array is ', this.state.update);
+  }
+
+  addToUpdate(row) {
+    var toUpdate = this.state.update;
+    var found = false;
+    var update = toUpdate.map(element => {
+      if (element.id === row.id) {
+        found = true;
+        return row;
+      } else {
+        return element;
+      }
+    });
+
+    if (found === false) {
+      update.push(row);
+    }
+
+    this.setState({ update });
+  }
+
+  handleOnSelect = (row, isSelect) => {
+    if (isSelect) {
+      let selectedArray = JSON.parse(localStorage.getItem('selectedArray'));
+
+      if (!selectedArray.includes(row.id)) {
+        selectedArray.push(row.id);
+      }
+
+      localStorage.setItem('selectedArray', JSON.stringify(selectedArray));
+    } else {
+      let selectedArray = JSON.parse(localStorage.getItem('selectedArray'));
+      let newSelected = selectedArray.filter(id => id !== row.id);
+
+      localStorage.setItem('selectedArray', JSON.stringify(newSelected));
+    }
+  }
+
+  deleteUsers() {
+    console.log("ids to delete", JSON.parse(localStorage.getItem('selectedArray')));
   }
 
   render() {
+    const selectRow ={
+      mode: 'checkbox',
+      hideSelectColumn: true,
+      clickToSelect: true,
+      clickToEdit: true,
+      style: { backgroundColor: '#c8e6c9' },
+      onSelect: (row, isSelect, rowIndex, e) => {
+        localStorage.setItem('selectedRow', JSON.stringify(row));
+        this.handleOnSelect(row, isSelect);
+      }
+    };
+
     return (
       <div className="layout-scene-wrapper">
         <Grid>
@@ -217,10 +284,10 @@ class UpdateClient extends Component {
               <div className="updateclient-tablecontainer">
                 <div className="updateclient-buttons-container">
                   <div className="updateclient-buttons-container" id="left">
-                     <Button className="button-prim button-size" onClick={ () => this.sendData() } block>Update user</Button>
+                     <Button className="button-prim button-size" onClick={ () => this.updateData() } block>Update users</Button>
                   </div>
                   <div className="updateclient-buttons-container" id="right">
-                     <Button className="button-danger btn-danger button-size"  block>Delete user</Button>
+                     <Button className="button-danger btn-danger button-size" onClick={ () => this.deleteUsers() } block>Delete user</Button>
                   </div>
                 </div>
                 <BootstrapTable
@@ -231,6 +298,7 @@ class UpdateClient extends Component {
                   data={ this.state.userTable }
                   columns ={this.state.columns}
                   selectRow = { selectRow }
+                  filter={ filterFactory() }
                   cellEdit={ cellEditFactory({
                     mode: 'click',
                     afterSaveCell: (oldValue, newValue, row, column) => { this.updateUserTable(oldValue, newValue, row, column); }

@@ -7,6 +7,7 @@
     "react-bootstrap": "^0.32.1",
     "react-bootstrap-table-next": "^0.1.8",
     "react-bootstrap-table2-editor": "^0.1.5",
+    "react-bootstrap-table2-filter": "^0.1.6",
     "react-date-picker": "^6.10.1",
     "react-dom": "^16.3.1",
     "react-flags-select": "^1.1.6",

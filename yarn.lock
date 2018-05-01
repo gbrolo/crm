@@ -5599,6 +5599,10 @@ react-bootstrap-table2-editor@^0.1.5:
   version "0.1.5"
   resolved "https://registry.yarnpkg.com/react-bootstrap-table2-editor/-/react-bootstrap-table2-editor-0.1.5.tgz#0bcc8302aad91730a8f6502f051b30757d7a656a"
 
+react-bootstrap-table2-filter@^0.1.6:
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/react-bootstrap-table2-filter/-/react-bootstrap-table2-filter-0.1.6.tgz#01af56627cc7782fea44f6162ed490d7256d90eb"
+
 react-bootstrap@^0.32.1:
   version "0.32.1"
   resolved "https://registry.yarnpkg.com/react-bootstrap/-/react-bootstrap-0.32.1.tgz#60624c1b48a39d773ef6cce6421a4f33ecc166bb"
