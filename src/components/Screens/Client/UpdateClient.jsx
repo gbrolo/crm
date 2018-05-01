@@ -32,15 +32,49 @@ class UpdateClient extends Component {
         dataField: 'name',
         text: 'Name'
       }, {
-        dataField: 'age',
-        text: 'Age'
+        dataField: 'email',
+        text: 'Email'
+      }, {
+        dataField: 'sex',
+        text: 'Sex'
+      }, {
+        dataField: 'civstate',
+        text: 'Civil State'
+      }, {
+        dataField: 'birthDate',
+        text: 'Birth Date'
+      }, {
+        dataField: 'country',
+        text: 'Country'
       }],
 
       userTable: [
         {
           id: 0,
-          name: "Mikael",
-          age: 25
+          name: "Juan Gonzalez",
+          email: "jgonzalez@cusbromenlabs.com",
+          sex: "M",
+          civstate: "single",
+          birthDate: "1997-02-02",
+          country: "Guatemala"
+        },
+        {
+          id: 1,
+          name: "Alvaro Arzu",
+          email: "irigoyen@cusbromenlabs.com",
+          sex: "M",
+          civstate: "single",
+          birthDate: "1750-02-02",
+          country: "Guatemala"
+        },
+        {
+          id: 2,
+          name: "Naruto Uzumaki",
+          email: "uzumaki@cusbromenlabs.com",
+          sex: "M",
+          civstate: "married",
+          birthDate: "1997-05-02",
+          country: "Japan"
         }
       ]
     }
@@ -76,8 +110,13 @@ class UpdateClient extends Component {
           <Row>
             <Col xs={6} sm={6} md={6} lg={12}>
               <div className="updateclient-tablecontainer">
-                <div>
-                   <Button className="button-prim" onClick={ () => this.sendData() } block>Update data</Button>
+                <div className="updateclient-buttons-container">
+                  <div className="updateclient-buttons-container" id="left">
+                     <Button className="button-prim button-size" onClick={ () => this.sendData() } block>Update user</Button>
+                  </div>
+                  <div className="updateclient-buttons-container" id="right">
+                     <Button className="button-danger btn-danger button-size"  block>Delete user</Button>
+                  </div>
                 </div>
                 <BootstrapTable
                   striped

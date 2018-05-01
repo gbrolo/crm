@@ -16,3 +16,18 @@
   color: #fff;
   border: 5px;
 }
+
+.button-danger {
+  font-family: Roboto-Medium, sans-serif;
+  text-transform: uppercase;
+  text-shadow: 1px 1px 10px #181818;
+  border-color: #40d1a5;
+  color: #fff;
+  border: 5px;
+  padding: 10px;
+  margin-bottom: 5px;
+}
+
+.button-size {
+  width: 520px;
+}
