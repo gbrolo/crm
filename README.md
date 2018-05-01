@@ -1,6 +1,12 @@
 ## CRM
 Empresarial CRM made in React for UVG's CC3040
 
+To run:
+```
+yarn install
+yarn start
+```
+
 ## Made with React
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
