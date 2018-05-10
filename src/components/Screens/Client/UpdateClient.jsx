@@ -5,6 +5,7 @@ import { Button, Grid, Row, Col } from 'react-bootstrap';
 import BootstrapTable from 'react-bootstrap-table-next';
 import cellEditFactory from 'react-bootstrap-table2-editor';
 import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
+import paginationFactory from 'react-bootstrap-table2-paginator';
 
 // Styles
 import '../../../styles/_layout.css';
@@ -282,12 +283,45 @@ class UpdateClient extends Component {
           <Row>
             <Col xs={6} sm={6} md={6} lg={12}>
               <div className="updateclient-tablecontainer">
+                <div className="updateclient-instr-title">
+                  <b>Update clients:</b>
+                  <hr />
+                </div>
+                <div className="updateclient-instr-text">
+                  To update clients, click on a valid editable field <b>(ID can't be edited)</b> and input a new value.
+                  After you finished editing all the fields from all the clients you want to edit, click the button
+                  <b> UPDATE CLIENTS</b>.
+                </div>
+                <div className="updateclient-instr-title" id="last">
+                  <b>Delete clients:</b>
+                  <hr />
+                </div>
+                <div className="updateclient-instr-text">
+                  To delete clients, select (click) clients from table <b>(one click until row is green)</b>.
+                  Then, click the button <b>DELETE CLIENTS</b>. To unselect a client you don't want to delete anymore,
+                  select (click) that client again, and the row will change color to normal.
+                </div>
+                <div className="updateclient-instr-title" id="last">
+                  <b>Search clients:</b>
+                  <hr />
+                </div>
+                <div className="updateclient-instr-text">
+                  Filter each column in the table by a search query per colum: search by name, email or sex.
+                </div>
+              </div>
+            </Col>
+          </Row>
+        </Grid>
+        <Grid>
+          <Row>
+            <Col xs={6} sm={6} md={6} lg={12}>
+              <div className="updateclient-tablecontainer">
                 <div className="updateclient-buttons-container">
                   <div className="updateclient-buttons-container" id="left">
-                     <Button className="button-prim button-size" onClick={ () => this.updateData() } block>Update users</Button>
+                     <Button className="button-prim button-size" onClick={ () => this.updateData() } block>Update clients</Button>
                   </div>
                   <div className="updateclient-buttons-container" id="right">
-                     <Button className="button-danger btn-danger button-size" onClick={ () => this.deleteUsers() } block>Delete user</Button>
+                     <Button className="button-danger btn-danger button-size" onClick={ () => this.deleteUsers() } block>Delete clients</Button>
                   </div>
                 </div>
                 <BootstrapTable
@@ -299,6 +333,7 @@ class UpdateClient extends Component {
                   columns ={this.state.columns}
                   selectRow = { selectRow }
                   filter={ filterFactory() }
+                  pagination={ paginationFactory() }
                   cellEdit={ cellEditFactory({
                     mode: 'click',
                     afterSaveCell: (oldValue, newValue, row, column) => { this.updateUserTable(oldValue, newValue, row, column); }

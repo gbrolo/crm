@@ -21,8 +21,7 @@ class AddClient extends Component {
       sex: "",
       state: "",
       country: "",
-      twitter: "",
-      linkedin: ""
+      twitter: ""
     }
   }
 
@@ -34,7 +33,6 @@ class AddClient extends Component {
   OnChangeCivilState = state => this.setState({ state })
   OnChangeCountry = country => this.setState({ country })
   OnChangeTwitterHandle = twitter => this.setState({ twitter })
-  OnChangeLinkedInHandle = linkedin => this.setState({ linkedin })
 
   createUser() {
     console.log(this.state);
@@ -155,19 +153,8 @@ class AddClient extends Component {
                 </div>
                 <FormGroup>
                    <InputGroup className="addclient-form-input-element">
-                     <FormControl type="text" placeholder="/username" className="addclient-form-input-control"
+                     <FormControl type="text" placeholder="username" className="addclient-form-input-control"
                      onChange={(event) => this.OnChangeTwitterHandle(event.target.value)}
-                     />
-                   </InputGroup>
-                </FormGroup>
-
-                <div className="addclient-form-input">
-                  LinkedIn
-                </div>
-                <FormGroup>
-                   <InputGroup className="addclient-form-input-element">
-                     <FormControl type="text" placeholder="/username" className="addclient-form-input-control"
-                     onChange={(event) => this.OnChangeLinkedInHandle(event.target.value)}
                      />
                    </InputGroup>
                 </FormGroup>

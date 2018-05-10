@@ -5619,6 +5619,10 @@ react-bootstrap-table2-filter@^0.1.6:
   version "0.1.6"
   resolved "https://registry.yarnpkg.com/react-bootstrap-table2-filter/-/react-bootstrap-table2-filter-0.1.6.tgz#01af56627cc7782fea44f6162ed490d7256d90eb"
 
+react-bootstrap-table2-paginator@^0.1.3:
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/react-bootstrap-table2-paginator/-/react-bootstrap-table2-paginator-0.1.3.tgz#9676a0b0df0134814df39e03bb95f6beb9cb7fc2"
+
 react-bootstrap@^0.32.1:
   version "0.32.1"
   resolved "https://registry.yarnpkg.com/react-bootstrap/-/react-bootstrap-0.32.1.tgz#60624c1b48a39d773ef6cce6421a4f33ecc166bb"

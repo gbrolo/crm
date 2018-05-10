@@ -1,3 +1,12 @@
+hr {
+  margin: 5px;
+}
+
+hr#cat {
+  margin-top: 5px;
+  margin-bottom: 20px;
+}
+
 .updateclient-tablecontainer {
   width: 1100px;
   height: auto;
@@ -22,4 +31,25 @@
 .updateclient-buttons-container#right {
   float: left;
   margin-left: 20px;
+}
+
+.updateclient-instr-title {
+  font-size: 0.9em;
+  text-transform: uppercase;
+}
+
+.updateclient-instr-title#last {
+  margin-top: 20px;
+}
+
+.updateclient-instr-text {
+  font-size: 0.7em;
+}
+
+.updateclient-cat-initial {
+  display: none;
+}
+
+.updateclient-cat-initial-first {
+  display: block;
 }

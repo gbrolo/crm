@@ -7,10 +7,10 @@ import NavBar from './Navigation/NavBar';
 import Dashboard from './Screens/Dashboard';
 import AddClient from './Screens/Client/AddClient';
 import UpdateClient from './Screens/Client/UpdateClient';
-import RemoveClient from './Screens/Client/RemoveClient';
 import ShowClients from './Screens/Info/ShowClients';
 import ShowCatalogue from './Screens/Info/ShowCatalogue';
 import Search from './Screens/Social/Search';
+import ClientsTwitterInfo from './Screens/Social/ClientsTwitterInfo';
 
 // Styles
 import '../styles/_navigation-bar.css';
@@ -23,9 +23,9 @@ const Main = () => (
       <Route exact path='/' render={() => (<Dashboard />)} />
       <Route path='/clients/add' render={() => (<AddClient />)} />
       <Route path='/clients/update' render={() => (<UpdateClient />)} />
-      <Route path='/clients/remove' render={() => (<RemoveClient />)} />
       <Route path='/info/show/clients' render={() => (<ShowClients />)} />
       <Route path='/info/show/catalogue' render={() => (<ShowCatalogue />)} />
+      <Route path='/social/clients-twitter' render={() => (<ClientsTwitterInfo />)} />
       <Route path='/social/search' render={() => (<Search />)} />
     </Switch>
   </div>
