@@ -159,6 +159,27 @@ class UpdateClient extends Component {
           }
           return true;
         }
+      }, {
+        dataField: 'twitterHandle',
+        text: 'Twitter Handle',
+        filter: textFilter(),
+        validator: (newValue, row, column) => {
+          if (newValue === "") {
+            alert('Field must not be empty');
+            return {
+              valid: false,
+              message: 'Field must not be empty'
+            };
+          }
+          if (isNaN(typeof parseInt(newValue)) === false) {
+            alert('Field must have a text value');
+            return {
+              valid: false,
+              message: 'Field must have a text value'
+            };
+          }
+          return true;
+        }
       }],
 
       userTable: [
@@ -169,7 +190,8 @@ class UpdateClient extends Component {
           sex: "M",
           civstate: "single",
           birthDate: "1997-02-02",
-          country: "Guatemala"
+          country: "Guatemala",
+          twitterHandle: "jgonz"
         },
         {
           id: 1,
@@ -178,7 +200,8 @@ class UpdateClient extends Component {
           sex: "M",
           civstate: "single",
           birthDate: "1750-02-02",
-          country: "Guatemala"
+          country: "Guatemala",
+          twitterHandle: "arzu"
         },
         {
           id: 2,
@@ -187,7 +210,8 @@ class UpdateClient extends Component {
           sex: "M",
           civstate: "married",
           birthDate: "1997-05-02",
-          country: "Japan"
+          country: "Japan",
+          twitterHandle: "naruto"
         }
       ],
 

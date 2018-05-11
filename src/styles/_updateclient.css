@@ -53,3 +53,7 @@ hr#cat {
 .updateclient-cat-initial-first {
   display: block;
 }
+
+.updateclient-image {
+  text-align: center;
+}

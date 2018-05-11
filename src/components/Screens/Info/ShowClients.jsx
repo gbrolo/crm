@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Button, Grid, Row, Col, PageHeader } from 'react-bootstrap';
+import { Redirect } from 'react-router'
 
 import BootstrapTable from 'react-bootstrap-table-next';
 import cellEditFactory from 'react-bootstrap-table2-editor';
@@ -40,6 +41,9 @@ class ShowClients extends Component {
       }, {
         dataField: 'country',
         text: 'Country'
+      }, {
+        dataField: 'twitterHandle',
+        text: 'Twitter Handle'
       }],
 
       userTable: [
@@ -50,7 +54,8 @@ class ShowClients extends Component {
           sex: "M",
           civstate: "single",
           birthDate: "1997-02-02",
-          country: "Guatemala"
+          country: "Guatemala",
+          twitterHandle: "jgonz"
         },
         {
           id: 1,
@@ -59,7 +64,8 @@ class ShowClients extends Component {
           sex: "M",
           civstate: "single",
           birthDate: "1750-02-02",
-          country: "Guatemala"
+          country: "Guatemala",
+          twitterHandle: "arzu"
         },
         {
           id: 2,
@@ -68,9 +74,20 @@ class ShowClients extends Component {
           sex: "M",
           civstate: "married",
           birthDate: "1997-05-02",
-          country: "Japan"
+          country: "Japan",
+          twitterHandle: "naruto"
         }
-      ]
+      ],
+
+      tphotoLink: 'https://st2.depositphotos.com/2777531/6505/v/950/depositphotos_65058913-stock-illustration-hipster-man-avatar-user.jpg',
+      tname: 'Twitter User',
+      tfavs: '0',
+      ttweets: '0',
+      tfollowers: '0',
+      tfollows: '0',
+      tlasttweets: [],
+
+      redirectToProfile: false
     }
   }
 
@@ -125,7 +142,74 @@ class ShowClients extends Component {
     link.click();
   }
 
+  showProfile() {
+    var selectedRow = JSON.parse(localStorage.getItem('selectedRowShow'));
+    if (selectedRow !== null) {
+      var twitterHandle = selectedRow.twitterHandle;
+      console.log(twitterHandle);
+      // hacer un request a la api con el twitterHandle que devuelva:
+      // foto, nombre, descripcion, #favs, #tweets, #followers, #follows, array con los ultimos 30 tweets
+      // cambiar el valor del selectedRowShow
+      localStorage.setItem('selectedRowShow', null);
+
+      // luego del request, cambiar los valores del state correspondientes con los resultados del request
+      // y luego guardarlos en un objeto y guardarlo en localStorage
+
+      // el id en esto es un id solo para poder ordenar la tabla y que no truene react, igual se tiene que devolver
+      var lastTweets = [
+        {
+          id: 0,
+          tweet: "example of tweet"
+        },
+        {
+          id: 1,
+          tweet: "other tweet"
+        }
+      ]
+
+      var twitterInfo = {
+        tphotoLink: this.state.tphotoLink,
+        tname: this.state.tname,
+        tfavs: this.state.tfavs,
+        ttweets: this.state.ttweets,
+        tfollowers: this.state.tfollowers,
+        tfollows: this.state.tfollows,
+        tlasttweets: lastTweets,
+      }
+
+      localStorage.setItem('twitterInfo', JSON.stringify(twitterInfo));
+
+      // y cambiar el estado de redirect a true:
+      this.setState({ redirectToProfile: true });
+
+    } else {
+      alert("No user selected")
+    }
+  }
+
+  nothing() {
+    console.log('no click yet');
+  }
+
   render() {
+    const _this = this;
+    const selectRow ={
+      mode: 'radio',
+      hideSelectColumn: true,
+      clickToSelect: true,
+      style: { backgroundColor: '#c8e6c9' },
+      onSelect: (row, isSelect, rowIndex, e) => {
+        localStorage.setItem('selectedRowShow', JSON.stringify(row));
+      }
+    };
+
+    const redirect = this.state.redirectToProfile;
+    console.log('redirect is', redirect);
+
+    if (redirect === true) {
+      return <Redirect to='/social/clients-twitter' />;
+    }
+
     return (
       <div className="layout-scene-wrapper">
         <PageHeader className="layout-pageheader">
@@ -167,6 +251,17 @@ class ShowClients extends Component {
                           Export CSV
                       </Button>
                   </div>
+                  <div className="updateclient-buttons-container" id="right">
+                     <Button
+                        bsStyle="info"
+                        className="button-size button-override-font"
+                        onClick={ () => this.showProfile() }
+                        block
+                        type="submit">
+                          Show Twitter Profile
+                      </Button>
+
+                  </div>
                 </div>
                 <BootstrapTable
                   striped
@@ -175,6 +270,7 @@ class ShowClients extends Component {
                   keyField='id'
                   data={ this.state.userTable }
                   columns ={this.state.columns}
+                  selectRow = { selectRow }
                   filter={ filterFactory() }
                   pagination={ paginationFactory() }/>
               </div>
