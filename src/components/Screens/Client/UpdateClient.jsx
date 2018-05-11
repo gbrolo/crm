@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Button, Grid, Row, Col, Alert, PageHeader } from 'react-bootstrap';
+import { Button, Grid, Row, Col, Alert, PageHeader, FormGroup, FormControl, InputGroup } from 'react-bootstrap';
 
 import BootstrapTable from 'react-bootstrap-table-next';
 import cellEditFactory from 'react-bootstrap-table2-editor';
@@ -308,6 +308,20 @@ class UpdateClient extends Component {
     alert.style.display = "none";
   }
 
+  showAlertNewColumn() {
+    var alert = document.getElementById("alert-addnewcolumn");
+    alert.style.display = "block";
+  }
+
+  hideAlertNewColumn() {
+    var alert = document.getElementById("alert-addnewcolumn");
+    alert.style.display = "none";
+  }
+
+  addNewColumn() {
+
+  }
+
   render() {
     const selectRow ={
       mode: 'checkbox',
@@ -371,6 +385,9 @@ class UpdateClient extends Component {
                   <div className="updateclient-buttons-container" id="right">
                      <Button className="button-danger btn-danger button-size" onClick={ () => this.showAlertDelete() } block>Delete clients</Button>
                   </div>
+                  <div className="updateclient-buttons-container" id="right">
+                     <Button bsStyle="info" className="button-override-font button-size button-fillpadding" onClick={ () => this.showAlertNewColumn() } block>Add New Column</Button>
+                  </div>
 
                   <Alert bsStyle="warning" className="layout-confirm-box" id="alert-updateclient">
                      <p>Are you sure you want to <b>update client(s)</b> with given information? </p>
@@ -401,6 +418,42 @@ class UpdateClient extends Component {
                            className="button-override-font"
                            onClick={() => this.hideAlertDelete()}
                            block>No</Button>
+                     </p>
+                  </Alert>
+
+                  <Alert bsStyle="info" className="layout-confirm-box" id="alert-addnewcolumn">
+                     <p>Please specify <b>column name</b> and <b>type</b>.</p>
+                     <p>
+                       <form>
+                         <FormGroup>
+                            <InputGroup className="addclient-form-input-element">
+                              <FormControl type="text" placeholder="Name"
+                              onChange={(event) => this.setState({ newColName: event.target.value })}
+                              required
+                              />
+                            </InputGroup>
+                         </FormGroup>
+                         <FormGroup>
+                            <InputGroup className="addclient-form-input-element">
+                              <FormControl type="text" placeholder="Type"
+                              onChange={(event) => this.setState({ newColType: event.target.value })}
+                              required
+                              />
+                            </InputGroup>
+                         </FormGroup>
+                       </form>
+                     </p>
+                     <p>
+                       <Button
+                           bsStyle="success"
+                           className="button-override-font"
+                           onClick={() => this.addNewColumn()}
+                           block>Create</Button>
+                       <Button
+                           bsStyle="primary"
+                           className="button-override-font"
+                           onClick={() => this.hideAlertNewColumn()}
+                           block>Cancel</Button>
                      </p>
                   </Alert>
 

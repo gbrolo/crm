@@ -35,7 +35,11 @@
 }
 
 .button-size {
-  width: 520px;
+  width: 340px;
+}
+
+.button-fillpadding {
+  padding: 9px;
 }
 
 .button-size-sm {
