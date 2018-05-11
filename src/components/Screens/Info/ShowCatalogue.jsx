@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Button, Grid, Row, Col, Tab, Nav, NavItem } from 'react-bootstrap';
+import { Button, Grid, Row, Col, Tab, Nav, NavItem, PageHeader } from 'react-bootstrap';
 
 import BootstrapTable from 'react-bootstrap-table-next';
 import cellEditFactory from 'react-bootstrap-table2-editor';
@@ -146,6 +146,9 @@ class ShowCatalogue extends Component {
   render() {
     return (
       <div className="layout-scene-wrapper">
+        <PageHeader className="layout-pageheader">
+          Catalogue
+        </PageHeader>;
         <Grid>
           <Row>
             <Col xs={6} sm={6} md={6} lg={12}>

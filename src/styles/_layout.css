@@ -27,6 +27,19 @@
   height: 100%;
 }
 
+.layout-confirm-box {
+  margin: 20px 0;
+  display: none;
+  border-radius: 5px;
+}
+
+.layout-pageheader {
+  color: #181818;
+  padding: 20px;
+  background-color: #fff;
+  width: 1120px;
+}
+
 .full-container {
   background: #f0f0f0;
   height: 100%;

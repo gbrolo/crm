@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ReactFlagsSelect from 'react-flags-select';
 import DatePicker from 'react-date-picker';
-import { Button, FormGroup, FormControl, InputGroup, Grid, Row, Col } from 'react-bootstrap';
+import { Button, FormGroup, FormControl, InputGroup, Grid, Row, Col, Alert, PageHeader } from 'react-bootstrap';
 
 // Styles
 import '../../../styles/_layout.css';
@@ -25,23 +25,70 @@ class AddClient extends Component {
     }
   }
 
-  onChangeDate = birthDate => this.setState({ birthDate })
-  onChangeName = name => this.setState({ name })
-  onChangeLastName = lastname => this.setState({ lastname })
-  onChangeEmail = email => this.setState({ email })
-  onChangeSex = sex => this.setState({ sex })
-  OnChangeCivilState = state => this.setState({ state })
-  OnChangeCountry = country => this.setState({ country })
-  OnChangeTwitterHandle = twitter => this.setState({ twitter })
+  onChangeDate(birthDate) {
+    this.setState({ birthDate });
+    this.hideAlert();
+  }
+
+  onChangeName(name) {
+    this.setState({ name });
+    this.hideAlert();
+  }
+
+  onChangeLastName(lastname) {
+    this.setState({ lastname });
+    this.hideAlert();
+  }
+
+  onChangeEmail(email) {
+    this.setState({ email });
+    this.hideAlert();
+  }
+
+  onChangeSex(sex) {
+    this.setState({ sex });
+    this.hideAlert();
+  }
+
+  OnChangeCivilState(state) {
+    this.setState({ state });
+    this.hideAlert();
+  }
+
+  OnChangeCountry(country) {
+    this.setState({ country });
+    this.hideAlert();
+  }
+
+  OnChangeTwitterHandle(twitter) {
+    this.setState({ twitter });
+    this.hideAlert();
+  }
 
   createUser() {
     console.log(this.state);
   }
 
+  showAlert(event) {
+    event.preventDefault();
+    var alert = document.getElementById("alert-addclient");
+    alert.style.display = "block";
+  }
+
+  hideAlert() {
+    var alert = document.getElementById("alert-addclient");
+    alert.style.display = "none";
+  }
+
   render() {
     return (
       <div className="layout-scene-wrapper">
-      <form onSubmit = { () => this.createUser() }>
+
+      <PageHeader className="layout-pageheader">
+        Add Client
+      </PageHeader>;
+
+      <form onSubmit = { (event) => this.showAlert(event) }>
         <div className="addclient-fillinfo">
           <Grid>
             <Row>
@@ -79,7 +126,7 @@ class AddClient extends Component {
                 </div>
                 <FormGroup>
                    <InputGroup className="addclient-form-input-element">
-                     <FormControl type="text" placeholder="E-mail" className="addclient-form-input-control"
+                     <FormControl type="email" placeholder="E-mail" className="addclient-form-input-control"
                      onChange={(event) => this.onChangeEmail(event.target.value)}
                      required
                      />
@@ -94,8 +141,8 @@ class AddClient extends Component {
                      <FormControl componentClass="select" placeholder="Select a sex." className="addclient-form-input-control"
                      onChange={(event) => this.onChangeSex(event.target.value)}
                      required>
-                        <option value="male" >Male</option>
-                        <option value="female" >Female</option>
+                        <option value="M" >Male</option>
+                        <option value="F" >Female</option>
                      </FormControl>
                    </InputGroup>
                 </FormGroup>
@@ -108,10 +155,9 @@ class AddClient extends Component {
                      <FormControl componentClass="select" placeholder="Select a civil state." className="addclient-form-input-control"
                      onChange={(event) => this.OnChangeCivilState(event.target.value)}
                      required>
-                        <option value="single" >Single</option>
-                        <option value="married" >Married</option>
-                        <option value="widow" >Widow</option>
-                        <option value="divorced" >Divorced</option>
+                        <option value="Single" >Single</option>
+                        <option value="Married" >Married</option>
+                        <option value="Divorced" >Divorced</option>
                      </FormControl>
                    </InputGroup>
                 </FormGroup>
@@ -160,7 +206,22 @@ class AddClient extends Component {
                 </FormGroup>
 
                 <div>
-                   <Button type="submit" className="button-prim" block>Add user</Button>
+                   <Button type="submit" className="button-prim" block>Add client</Button>
+                   <Alert bsStyle="warning" className="layout-confirm-box" id="alert-addclient">
+                      <p>Are you sure you want to <b>create a new client</b> with given information? </p>
+                      <p>
+                        <Button
+                            bsStyle="success"
+                            className="button-override-font"
+                            onClick={() => this.createUser()}
+                            block>Yes</Button>
+                        <Button
+                            bsStyle="primary"
+                            className="button-override-font"
+                            onClick={() => this.hideAlert()}
+                            block>No</Button>
+                      </p>
+                   </Alert>
                 </div>
 
               </Col>

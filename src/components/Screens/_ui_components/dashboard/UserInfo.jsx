@@ -18,27 +18,25 @@ class UserInfo extends Component {
 
   render() {
     return (
-      <div>
-        <div className="dashboard-userpiechart-container">
-          <div className="dashboard-titletoplabel">
-            Clients info
-          </div>
-          <PieChart
-            data = { this.state.sexChartData }
-            width = { 400 }
-            height = { 250 }
-            margin={{top: 10, bottom: 10, left: 75, right: 75}}
-            sort = { null }
-          />
-          <div className="dashboard-userinfo">
-            <b>Total clients: </b> 100
-          </div>
-          <div className="dashboard-userinfo">
-            <b>Men: </b> 60
-          </div>
-          <div className="dashboard-userinfo">
-            <b>Woman: </b> 40
-          </div>
+      <div className="dashboard-userpiechart-container">
+        <div className="dashboard-titletoplabel">
+          Clients info
+        </div>
+        <PieChart
+          data = { this.state.sexChartData }
+          width = { 400 }
+          height = { 250 }
+          margin={{top: 10, bottom: 10, left: 75, right: 75}}
+          sort = { null }
+        />
+        <div className="dashboard-userinfo">
+          <b>Total clients: </b> 100
+        </div>
+        <div className="dashboard-userinfo">
+          <b>Men: </b> 60
+        </div>
+        <div className="dashboard-userinfo">
+          <b>Woman: </b> 40
         </div>
       </div>
     )

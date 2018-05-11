@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Button, Grid, Row, Col } from 'react-bootstrap';
+import { Button, Grid, Row, Col, PageHeader } from 'react-bootstrap';
 
 import BootstrapTable from 'react-bootstrap-table-next';
 import cellEditFactory from 'react-bootstrap-table2-editor';
@@ -128,6 +128,9 @@ class ShowClients extends Component {
   render() {
     return (
       <div className="layout-scene-wrapper">
+        <PageHeader className="layout-pageheader">
+          Clients
+        </PageHeader>;
         <Grid>
           <Row>
             <Col xs={6} sm={6} md={6} lg={12}>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Button, Grid, Row, Col } from 'react-bootstrap';
+import { Button, Grid, Row, Col, Alert, PageHeader } from 'react-bootstrap';
 
 import BootstrapTable from 'react-bootstrap-table-next';
 import cellEditFactory from 'react-bootstrap-table2-editor';
@@ -264,6 +264,26 @@ class UpdateClient extends Component {
     console.log("ids to delete", JSON.parse(localStorage.getItem('selectedArray')));
   }
 
+  showAlertUpdate() {
+    var alert = document.getElementById("alert-updateclient");
+    alert.style.display = "block";
+  }
+
+  hideAlertUpdate() {
+    var alert = document.getElementById("alert-updateclient");
+    alert.style.display = "none";
+  }
+
+  showAlertDelete() {
+    var alert = document.getElementById("alert-deleteclient");
+    alert.style.display = "block";
+  }
+
+  hideAlertDelete() {
+    var alert = document.getElementById("alert-deleteclient");
+    alert.style.display = "none";
+  }
+
   render() {
     const selectRow ={
       mode: 'checkbox',
@@ -279,6 +299,10 @@ class UpdateClient extends Component {
 
     return (
       <div className="layout-scene-wrapper">
+        <PageHeader className="layout-pageheader">
+          Edit clients
+        </PageHeader>;
+
         <Grid>
           <Row>
             <Col xs={6} sm={6} md={6} lg={12}>
@@ -318,11 +342,44 @@ class UpdateClient extends Component {
               <div className="updateclient-tablecontainer">
                 <div className="updateclient-buttons-container">
                   <div className="updateclient-buttons-container" id="left">
-                     <Button className="button-prim button-size" onClick={ () => this.updateData() } block>Update clients</Button>
+                     <Button className="button-prim button-size" onClick={ () => this.showAlertUpdate() } block>Update clients</Button>
                   </div>
                   <div className="updateclient-buttons-container" id="right">
-                     <Button className="button-danger btn-danger button-size" onClick={ () => this.deleteUsers() } block>Delete clients</Button>
+                     <Button className="button-danger btn-danger button-size" onClick={ () => this.showAlertDelete() } block>Delete clients</Button>
                   </div>
+
+                  <Alert bsStyle="warning" className="layout-confirm-box" id="alert-updateclient">
+                     <p>Are you sure you want to <b>update client(s)</b> with given information? </p>
+                     <p>
+                       <Button
+                           bsStyle="success"
+                           className="button-override-font"
+                           onClick={() => this.updateData()}
+                           block>Yes</Button>
+                       <Button
+                           bsStyle="primary"
+                           className="button-override-font"
+                           onClick={() => this.hideAlertUpdate()}
+                           block>No</Button>
+                     </p>
+                  </Alert>
+
+                  <Alert bsStyle="warning" className="layout-confirm-box" id="alert-deleteclient">
+                     <p>Are you sure you want to <b>delete selected client(s)</b>? </p>
+                     <p>
+                       <Button
+                           bsStyle="success"
+                           className="button-override-font"
+                           onClick={() => this.deleteUsers()}
+                           block>Yes</Button>
+                       <Button
+                           bsStyle="primary"
+                           className="button-override-font"
+                           onClick={() => this.hideAlertDelete()}
+                           block>No</Button>
+                     </p>
+                  </Alert>
+
                 </div>
                 <BootstrapTable
                   striped
