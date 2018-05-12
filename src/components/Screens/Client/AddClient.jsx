@@ -21,8 +21,12 @@ class AddClient extends Component {
       sex: "",
       state: "",
       country: "",
-      twitter: ""
+      twitter: "",
+      noErrors: true,
+      errors: ''
     }
+
+    this.onChangeDate = this.onChangeDate.bind(this)
   }
 
   onChangeDate(birthDate) {
@@ -66,6 +70,28 @@ class AddClient extends Component {
   }
 
   createUser() {
+    let noErrors = true;
+    let errorMsg = "";
+
+    // Validate twitter username
+    if (this.state.twitter.charAt(0) !== "@"){
+      noErrors = false;
+      errorMsg += "Usuario de Twitter invalido. Agregue arroba al inicio."
+    }
+
+    if (noErrors){
+      // Delete error message box
+      document.getElementById('register-error-msg').style.display = 'none';
+
+      // Conect with API to create new client
+
+
+    } else {
+      // Display error box
+      this.setState({errors: errorMsg});
+      document.getElementById('register-error-msg').style.display = 'block';
+
+    }
     console.log(this.state);
   }
 
@@ -134,15 +160,16 @@ class AddClient extends Component {
                 </FormGroup>
 
                 <div className="addclient-form-input">
-                  Sex
+                  Gender
                 </div>
                 <FormGroup>
                    <InputGroup className="addclient-form-input-element">
-                     <FormControl componentClass="select" placeholder="Select a sex." className="addclient-form-input-control"
+                     <FormControl componentClass="select" placeholder="Select a gender." className="addclient-form-input-control"
                      onChange={(event) => this.onChangeSex(event.target.value)}
                      required>
-                        <option value="M" >Male</option>
-                        <option value="F" >Female</option>
+                        <option value="Male" >Male</option>
+                        <option value="Female" >Female</option>
+                        <option value="Other" >Other</option>
                      </FormControl>
                    </InputGroup>
                 </FormGroup>
@@ -201,11 +228,15 @@ class AddClient extends Component {
                    <InputGroup className="addclient-form-input-element">
                      <FormControl type="text" placeholder="username" className="addclient-form-input-control"
                      onChange={(event) => this.OnChangeTwitterHandle(event.target.value)}
+                     required
                      />
                    </InputGroup>
                 </FormGroup>
 
                 <div>
+                   <div className="error-msg" id="register-error-msg">
+                       { this.state.errors }
+                   </div>
                    <Button type="submit" className="button-prim" block>Add client</Button>
                    <Alert bsStyle="warning" className="layout-confirm-box" id="alert-addclient">
                       <p>Are you sure you want to <b>create a new client</b> with given information? </p>

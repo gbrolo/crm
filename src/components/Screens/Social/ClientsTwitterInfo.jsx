@@ -52,6 +52,7 @@ class ClientsTwitterInfo extends Component {
 
                 <div className="updateclient-image">
                   <Image
+                    className="updateclient-actual-image"
                     src={this.state.tphotoLink}
                     width={200}
                     height={200}

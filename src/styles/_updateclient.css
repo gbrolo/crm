@@ -57,3 +57,7 @@ hr#cat {
 .updateclient-image {
   text-align: center;
 }
+
+.updateclient-actual-image{
+  border-radius: 50%;
+}

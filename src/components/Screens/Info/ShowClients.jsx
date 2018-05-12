@@ -13,6 +13,8 @@ import '../../../styles/_layout.css';
 import '../../../styles/_buttons.css';
 import '../../../styles/_updateclient.css';
 
+
+
 class ShowClients extends Component {
   constructor(props) {
     super(props);
@@ -79,7 +81,7 @@ class ShowClients extends Component {
         }
       ],
 
-      tphotoLink: 'https://st2.depositphotos.com/2777531/6505/v/950/depositphotos_65058913-stock-illustration-hipster-man-avatar-user.jpg',
+      tphotoLink: 'https://pbs.twimg.com/profile_images/455870091138056193/UH1r-I-e_200x200.jpeg',
       tname: 'Twitter User',
       tfavs: '0',
       ttweets: '0',
