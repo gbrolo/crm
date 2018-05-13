@@ -19,11 +19,23 @@ import axios from './Server';
 import '../styles/_navigation-bar.css';
 import '../styles/_layout.css';
 
+
+function isLoggedIn() {
+    var login_data = JSON.parse(localStorage.login_data || null) || {};
+    var datos =  login_data.data ;
+
+    if (datos !== undefined) {
+        return true
+    }
+
+    return false
+}
+
 // Screen view
 const Main = () => (
   <div>
     <Switch>
-      <Route exact path='/' render={() => (<Dashboard />)} />
+      <Route exact path='/dashboard' render={() => (<Dashboard />)} />
       <Route path='/clients/add' render={() => (<AddClient />)} />
       <Route path='/clients/update' render={() => (<UpdateClient />)} />
       <Route path='/info/show/clients' render={() => (<ShowClients />)} />
@@ -32,7 +44,7 @@ const Main = () => (
       <Route path='/social/search' render={() => (<Search />)} />
     </Switch>
   </div>
-)
+);
 
 // Full container
 class MainActivity extends Component {
