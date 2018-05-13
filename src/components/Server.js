@@ -7,6 +7,5 @@ const SERVER_ADDRESS = "http://ec2-34-216-170-228.us-west-2.compute.amazonaws.co
 let axiosInstance;
 export default axiosInstance = axios.create({
     baseURL: SERVER_ADDRESS,
-    timeout: 10000,
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded'}
+    timeout: 10000
   });

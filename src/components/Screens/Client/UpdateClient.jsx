@@ -183,7 +183,7 @@ const columns =  [{
     }
   }];
 
-const RemoteAll = ({data, page, sizePerPage, onTableChange, totalSize, selectRow}) => (
+const RemoteAll = ({data, page, sizePerPage, onTableChange, totalSize, selectRow, afterSaveCell}) => (
   <div>
     <BootstrapTable
       remote={ { pagination: true } }
@@ -194,7 +194,10 @@ const RemoteAll = ({data, page, sizePerPage, onTableChange, totalSize, selectRow
       pagination={ paginationFactory({ page, sizePerPage, totalSize }) }
       onTableChange={ onTableChange }
       overlay={ overlayFactory({ spinner: true, background: 'rgba(192,192,192,0.3)' }) }
-      cellEdit={ cellEditFactory({ mode: 'click' }) }
+      cellEdit={ cellEditFactory({
+       mode: 'click',
+       afterSaveCell: (oldValue, newValue, row, column) => {afterSaveCell(oldValue, newValue, row, column);}
+     }) }
       selectRow={ selectRow }
     />
   </div>
@@ -224,7 +227,8 @@ class UpdateClient extends Component {
       totalSize: 0,
       sizePerPage: 25,
       cursor: 0,
-      update: []
+      filters: {},
+      update: {data: []}
     };
 
     // Get first page
@@ -252,6 +256,7 @@ class UpdateClient extends Component {
       url += '&cursor=' + this.state.cursor;
     }
     try{
+      this.state.filters = filters;
       let response = await axios.get(url, {
         headers: {'Authorization': 'Bearer ' + localStorage.getItem('cbm_token')}
       });
@@ -282,18 +287,17 @@ class UpdateClient extends Component {
 
 
   handleTableChange = (type, { page, sizePerPage, filters }) => {
-    const currentIndex = (page - 1) * sizePerPage;
     // Get values from backend again
     this.refreshTable(page, filters);
   }
 
 
 
-  updateUserTable(oldValue, newValue, row, column) {
+  updateUserTable = (oldValue, newValue, row, column) => {
     // load row to exclude from localStorage
     var oldRow = JSON.parse(localStorage.getItem('selectedRow'));
-    var uTable = this.state.userTable;
-    var userTable = uTable.map(element => {
+    var uTable = this.state.data;
+    var data = uTable.map(element => {
       if (element.id === row.id) {
         return row;
       } else {
@@ -301,7 +305,7 @@ class UpdateClient extends Component {
       }
     });
 
-    this.setState({ userTable });
+    this.setState({ data });
 
     // set just a row to update
     //localStorage.setItem('rowToUpdate', JSON.stringify(row));
@@ -310,18 +314,29 @@ class UpdateClient extends Component {
     this.addToUpdate(row);
   }
 
-  updateData() {
+  async updateData() {
     //var rowToSend = JSON.parse(localStorage.getItem('rowToUpdate'));
     //console.log('row is', rowToSend);
 
-    // this is the update array to send to api
-    console.log('update array is ', this.state.update);
+    let updates = this.state.update;
+    try {
+      await axios.put('/clients', JSON.stringify(updates), {
+        headers: {'Content-Type': 'application/json'}
+      });
+
+      this.refreshTable(this.state.page, this.state.filters);
+    }catch(error) {
+      console.log(error);
+    }
+
+
+
   }
 
-  addToUpdate(row) {
-    var toUpdate = this.state.update;
+  addToUpdate = (row) => {
+    var toUpdate = this.state.update.data;
     var found = false;
-    var update = toUpdate.map(element => {
+    this.state.update.data = toUpdate.map(element => {
       if (element.id === row.id) {
         found = true;
         return row;
@@ -331,10 +346,9 @@ class UpdateClient extends Component {
     });
 
     if (found === false) {
-      update.push(row);
+      this.state.update.data.push(row);
     }
 
-    this.setState({ update });
   }
 
   handleOnSelect = (row, isSelect) => {
@@ -365,6 +379,7 @@ class UpdateClient extends Component {
           'Authorization': 'Bearer ' + localStorage.getItem('cbm_token')
         }
       });
+      this.refreshTable(this.state.page, this.state.filters);
     }catch(error) {
       // TODO show that ids cant be deleted
       console.error(error);
@@ -547,6 +562,7 @@ class UpdateClient extends Component {
                   totalSize={ this.state.totalSize }
                   onTableChange={ this.handleTableChange }
                   selectRow={ selectRow }
+                  afterSaveCell={this.updateUserTable}
                 />
               </div>
             </Col>
