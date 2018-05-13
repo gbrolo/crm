@@ -53,7 +53,6 @@ class MainActivity extends Component {
       const response = await axios.post('/login', qs.stringify(data));
       let payload = response.data.data
       localStorage.setItem('cbm_token', payload.token);
-      axios.defaults.headers['Authorization'] = 'Bearer ' + payload.token;
     }catch(error) {
       console.error(error)
     }
