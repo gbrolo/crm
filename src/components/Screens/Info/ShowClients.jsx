@@ -209,7 +209,7 @@ class ShowClients extends Component {
     console.log('redirect is', redirect);
 
     if (redirect === true) {
-      return <Redirect to='/social/clients-twitter' />;
+      return <Redirect to='/dashboard/social/clients-twitter' />;
     }
 
     return (

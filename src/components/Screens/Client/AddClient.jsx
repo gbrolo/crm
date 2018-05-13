@@ -29,8 +29,11 @@ class AddClient extends Component {
       twitter: '',
       noErrors: true,
       errors: '',
+      successMsg: '',
       showError: false
     }
+
+
 
   }
 
@@ -76,8 +79,10 @@ class AddClient extends Component {
 
 
   createUser = () => {
-    let noErrors = true;
+    document.getElementById('register-success-msg').style.display = 'none';  // hide success message
+    let noErrors = this.state.noErrors;
     let errorMsg = "";
+
     // Validate twitter username
     if (this.state.twitter.charAt(0) !== "@"){
       noErrors = false;
@@ -90,6 +95,7 @@ class AddClient extends Component {
 
       // Conect with API to create new client
       this.senData()
+
     } else {
       // Display error box
       this.setState({errors: errorMsg});
@@ -99,7 +105,7 @@ class AddClient extends Component {
     console.log(this.state);
   };
 
-  async senData() {
+    senData = async () => {
     const data = {
       name: this.state.name,
       lastName: this.state.lastname,
@@ -111,27 +117,30 @@ class AddClient extends Component {
       twitterHandle: this.state.twitter
     };
     try {
-      await axios.post('/addclient', qs.stringify(data))
-      // TODO add success message 
+      await axios.post('/addclient', qs.stringify(data));
+      this.setState({successMsg: 'Succesfully created new client', noError: false});
+      document.getElementById('register-success-msg').style.display = 'block';
+      connect.refresh(true);
+
     } catch(error) {
-      // TODO add error message
-      console.log(error.response);
-      // const errorMsg = error.response.data.data.errorMessage;
-      // this.setState({errors: errorMsg});
-      // document.getElementById('register-error-msg').style.display = 'block';
+      console.log(error.response.text);
+      this.setState({errors: error.response.statusText, noError: false});
+      document.getElementById('register-error-msg').style.display = 'block';
     }
 
-  }
+  };
 
   showAlert = (event) => {
     event.preventDefault();
     var alert = document.getElementById("alert-addclient");
     alert.style.display = "block";
-  }
+  };
 
   hideAlert = () => {
     var alert = document.getElementById("alert-addclient");
     alert.style.display = "none";
+    document.getElementById('register-success-msg').style.display = 'none';  // hide success message
+    document.getElementById('register-error-msg').style.display = 'none';
   }
 
   render() {
@@ -264,6 +273,9 @@ class AddClient extends Component {
                 <div>
                    <div className="error-msg" id="register-error-msg">
                        { this.state.errors }
+                   </div>
+                   <div className="success-msg" id="register-success-msg">
+                       { this.state.successMsg }
                    </div>
                    <Button type="submit" className="button-prim" block>Add client</Button>
                    <Alert bsStyle="warning" className="layout-confirm-box" id="alert-addclient">

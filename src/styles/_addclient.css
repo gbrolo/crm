@@ -60,3 +60,21 @@
   display: none;
   letter-spacing: normal;
 }
+
+
+.success-msg {
+  font-family: Roboto-Medium, sans-serif;
+  font-size: 0.8em;
+  color: #fff;
+  text-align: center;
+  text-transform: none;
+  float: left;
+  margin-bottom: 15px;
+  background: #56ba31;
+  padding: 15px;
+  margin-left: 10px;
+  margin-right: 10px;
+  border-radius: 5px;
+  display: none;
+  letter-spacing: normal;
+}
