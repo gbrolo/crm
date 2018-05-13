@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ReactFlagsSelect from 'react-flags-select';
 import DatePicker from 'react-date-picker';
-import { Button, FormGroup, FormControl, InputGroup, Grid, Row, Col, Alert, PageHeader } from 'react-bootstrap';
+import { Button, FormGroup, FormControl, InputGroup, Grid, Row, Col, Alert, PageHeader} from 'react-bootstrap';
+import qs from 'qs'
+
+
 
 // Styles
 import '../../../styles/_layout.css';
@@ -10,20 +13,23 @@ import '../../../styles/_buttons.css';
 import '../../../styles/_addclient.css';
 import 'react-flags-select/css/react-flags-select.css';
 
+import axios from '../../Server';
+
 class AddClient extends Component {
   constructor(props) {
     super(props);
     this.state = {
       birthDate: new Date(),
-      name: "",
-      lastname: "",
-      email: "",
-      sex: "",
-      state: "",
-      country: "",
-      twitter: "",
+      name: '',
+      lastname: '',
+      email: '',
+      sex: 'Male',
+      state: 'Single',
+      country: 'GT',
+      twitter: '',
       noErrors: true,
-      errors: ''
+      errors: '',
+      showError: false
     }
 
   }
@@ -53,29 +59,29 @@ class AddClient extends Component {
     this.hideAlert();
   };
 
-  OnChangeCivilState = (state) => {
+  onChangeCivilState = (state) => {
     this.setState({ state });
     this.hideAlert();
   };
 
-  OnChangeCountry = (country) => {
+  onChangeCountry = (country) => {
     this.setState({ country });
     this.hideAlert();
   };
 
-  OnChangeTwitterHandle = (twitter) => {
+  onChangeTwitterHandle = (twitter) => {
     this.setState({ twitter });
     this.hideAlert();
   };
 
+
   createUser = () => {
     let noErrors = true;
     let errorMsg = "";
-
     // Validate twitter username
     if (this.state.twitter.charAt(0) !== "@"){
       noErrors = false;
-      errorMsg += "Usuario de Twitter invalido. Agregue arroba al inicio."
+      errorMsg += "Invalid twitter user, please add '@'."
     }
 
     if (noErrors){
@@ -83,8 +89,7 @@ class AddClient extends Component {
       document.getElementById('register-error-msg').style.display = 'none';
 
       // Conect with API to create new client
-
-
+      this.senData()
     } else {
       // Display error box
       this.setState({errors: errorMsg});
@@ -94,24 +99,47 @@ class AddClient extends Component {
     console.log(this.state);
   };
 
-  showAlert(event) {
+  async senData() {
+    const data = {
+      name: this.state.name,
+      lastName: this.state.lastname,
+      email: this.state.email,
+      gender: this.state.sex,
+      civilState: this.state.state,
+      birthDate: this.state.birthDate,
+      country: this.state.country,
+      twitterHandle: this.state.twitter
+    };
+    console.log(data)
+    try {
+      await axios.post('/addclient', qs.stringify(data))
+      // TODO add success message 
+    } catch(error) {
+      const errorMsg = error.response.data.data.errorMessage;
+      this.setState({errors: errorMsg});
+      document.getElementById('register-error-msg').style.display = 'block';
+    }
+
+  }
+
+  showAlert = (event) => {
     event.preventDefault();
     var alert = document.getElementById("alert-addclient");
     alert.style.display = "block";
   }
 
-  hideAlert() {
+  hideAlert = () => {
     var alert = document.getElementById("alert-addclient");
     alert.style.display = "none";
   }
 
   render() {
+
     return (
       <div className="layout-scene-wrapper">
-
       <PageHeader className="layout-pageheader">
         Add Client
-      </PageHeader>;
+      </PageHeader>
 
       <form onSubmit = { (event) => this.showAlert(event) }>
         <div className="addclient-fillinfo">
@@ -179,7 +207,7 @@ class AddClient extends Component {
                 <FormGroup>
                    <InputGroup className="addclient-form-input-element">
                      <FormControl componentClass="select" placeholder="Select a civil state." className="addclient-form-input-control"
-                     onChange={(event) => this.OnChangeCivilState(event.target.value)}
+                     onChange={(event) => this.onChangeCivilState(event.target.value)}
                      required>
                         <option value="Single" >Single</option>
                         <option value="Married" >Married</option>
@@ -217,7 +245,7 @@ class AddClient extends Component {
                 searchable = {true}
                 defaultCountry = "GT"
                 className = "addclient-form-input-element"
-                onSelect = { this.OnChangeCountry }
+                onSelect = { this.onChangeCountry }
                 required/>
 
                 <div className="addclient-form-input">
@@ -226,7 +254,7 @@ class AddClient extends Component {
                 <FormGroup>
                    <InputGroup className="addclient-form-input-element">
                      <FormControl type="text" placeholder="username" className="addclient-form-input-control"
-                     onChange={(event) => this.OnChangeTwitterHandle(event.target.value)}
+                     onChange={(event) => this.onChangeTwitterHandle(event.target.value)}
                      required
                      />
                    </InputGroup>
