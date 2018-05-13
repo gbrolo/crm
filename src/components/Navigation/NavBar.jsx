@@ -24,15 +24,15 @@ class NavBar extends Component {
         </div>
         <ul>
           <Dropdown>
-            <li><i className="fa fa-dashboard" aria-hidden="true"></i><Link to='/'> Dashboard</Link></li>
+            <li><i className="fa fa-dashboard" aria-hidden="true"></i><Link to='/dashboard'> Dashboard</Link></li>
           </Dropdown>
           <Dropdown>
             <DropdownTrigger>
               <li><i className="fa fa-group" aria-hidden="true"></i> Manage clients</li>
             </DropdownTrigger>
             <DropdownContent>
-              <li id="dropdown"><i className="fa fa-plus" aria-hidden="true"></i><Link to='/clients/add'> Add client</Link></li>
-              <li id="dropdown"><i className="fa fa-edit" aria-hidden="true"></i><Link to='/clients/update'> Edit clients</Link></li>
+              <li id="dropdown"><i className="fa fa-plus" aria-hidden="true"></i><Link to='/dashboard/clients/add'> Add client</Link></li>
+              <li id="dropdown"><i className="fa fa-edit" aria-hidden="true"></i><Link to='/dashboard/clients/update'> Edit clients</Link></li>
             </DropdownContent>
           </Dropdown>
           <Dropdown>
@@ -40,8 +40,8 @@ class NavBar extends Component {
               <li><i className="fa fa-flag" aria-hidden="true"></i> Info and reports</li>
             </DropdownTrigger>
             <DropdownContent>
-              <li id="dropdown"><i className="fa fa-users" aria-hidden="true"></i><Link to='/info/show/clients'> Show clients</Link></li>
-              <li id="dropdown"><i className="fa fa-list" aria-hidden="true"></i><Link to='/info/show/catalogue'> Show catalogues</Link></li>
+              <li id="dropdown"><i className="fa fa-users" aria-hidden="true"></i><Link to='/dashboard/info/show/clients'> Show clients</Link></li>
+              <li id="dropdown"><i className="fa fa-list" aria-hidden="true"></i><Link to='/dashboard/info/show/catalogue'> Show catalogues</Link></li>
             </DropdownContent>
           </Dropdown>
           <Dropdown>
@@ -49,8 +49,8 @@ class NavBar extends Component {
               <li><i className="fa fa-address-card" aria-hidden="true"></i> Social</li>
             </DropdownTrigger>
             <DropdownContent>
-              <li id="dropdown"><i className="fa fa-twitter" aria-hidden="true"></i><Link to='/social/clients-twitter'> Clients Twitter Info</Link></li>
-              <li id="dropdown"><i className="fa fa-search" aria-hidden="true"></i><Link to='/social/search'> Search</Link></li>
+              <li id="dropdown"><i className="fa fa-twitter" aria-hidden="true"></i><Link to='/dashboard/social/clients-twitter'> Clients Twitter Info</Link></li>
+              <li id="dropdown"><i className="fa fa-search" aria-hidden="true"></i><Link to='/dashboard/social/search'> Search</Link></li>
             </DropdownContent>
           </Dropdown>
         </ul>

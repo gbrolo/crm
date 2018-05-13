@@ -40,6 +40,84 @@
   width: 1120px;
 }
 
+.layout-container-form {
+  text-align: center;
+  font-size: 95%;
+}
+
+.layout-top-container {
+  font-size: 1.8em;
+  background: #273543;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  text-align: center;
+}
+
+.layout-logoimg {
+  margin: 10px;
+}
+
+.layout-login-container {
+  background-color: #24303d;
+  padding: 20px;
+  padding-bottom: 40px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  display: block;
+}
+
+.layout-register-container {
+  background-color: #24303d;
+  padding: 20px;
+  padding-bottom: 40px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  display: none;
+}
+
+.layout-usr-img {
+  margin: 20px;
+}
+
+.layout-button-top-auth {
+  text-align: center;
+}
+
+.layout-auth-main {
+  background-color: #2e3e4e;
+  padding-bottom: 20px;
+}
+
+.layout-policies {
+  color: #fff;
+  text-transform: uppercase;
+  text-align: justify;
+  font-size: 0.6em;
+}
+
+.layout-auth-title {
+  font-family: Roboto-Medium, sans-serif;
+  text-shadow: 1px 1px 10px #181818;
+  color: #fff;
+  padding: 10px;
+  font-size: 2em;
+}
+
+.layout-footer {
+  padding: 20px;
+  text-align: center;
+  background: #273543;
+  color: #fff;
+}
+
 .full-container {
   background: #f0f0f0;
   height: 100%;

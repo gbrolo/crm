@@ -36,12 +36,12 @@ const Main = () => (
   <div>
     <Switch>
       <Route exact path='/dashboard' render={() => (<Dashboard />)} />
-      <Route path='/clients/add' render={() => (<AddClient />)} />
-      <Route path='/clients/update' render={() => (<UpdateClient />)} />
-      <Route path='/info/show/clients' render={() => (<ShowClients />)} />
-      <Route path='/info/show/catalogue' render={() => (<ShowCatalogue />)} />
-      <Route path='/social/clients-twitter' render={() => (<ClientsTwitterInfo />)} />
-      <Route path='/social/search' render={() => (<Search />)} />
+      <Route path='/dashboard/clients/add' render={() => (<AddClient />)} />
+      <Route path='/dashboard/clients/update' render={() => (<UpdateClient />)} />
+      <Route path='/dashboard/info/show/clients' render={() => (<ShowClients />)} />
+      <Route path='/dashboard/info/show/catalogue' render={() => (<ShowCatalogue />)} />
+      <Route path='/dashboard/social/clients-twitter' render={() => (<ClientsTwitterInfo />)} />
+      <Route path='/dashboard/social/search' render={() => (<Search />)} />
     </Switch>
   </div>
 );

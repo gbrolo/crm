@@ -47,3 +47,20 @@
   margin-top: 20px;
   margin-left: 10px;
 }
+
+.button-auth {
+  float: right;
+  width: 200px;
+  background: #24303d;
+  border-color: #40d1a5;
+  color: #fff;
+  border: 5px;
+  margin-top: 10px;
+}
+
+.button-auth:hover {
+  background: #2e3e4e;
+  border-color: #2e3e4e;
+  color: #fff;
+  border: 5px;
+}

@@ -6,9 +6,10 @@ import { Redirect } from 'react-router'
 
 
 import { Checkbox, Button, Panel, PanelGroup, FormGroup, FormControl, InputGroup, Grid, Row, Col } from 'react-bootstrap';
-import '../styles/_authforms.css';
-import '../styles/_generic-screen.css';
 import '../res/icons/font-awesome-4.7.0/css/font-awesome.css';
+
+import '../styles/_layout.css';
+import '../styles/_buttons.css';
 
 const logo = require('../res/img/logo.png');
 const artwork_people = require('../res/img/artwork-people.png');
@@ -107,20 +108,20 @@ class AuthScreen extends Component {
 
     errores1(){
         if (this.state.error===1){
-            return "Su correo o contraseña no es valido intente de nuevo";
+            return "Invalid eMail or password.";
         }
     }
     errores2(){
         var mostrarErrores = "";
 
         if (this.state.register_error===2){
-            mostrarErrores = "Por favor complete los campos.";
+            mostrarErrores = "Please fill input fields.";
         }
         if (this.state.register_error===3){
-            mostrarErrores =  "Ese correo ya está registrado.";
+            mostrarErrores =  "eMail already taken!";
         }
         if (this.state.register_error === 4) {
-            mostrarErrores = "Token de acceso invalido.";
+            mostrarErrores = "Invalid access token.";
         }
 
         if (this.state.register_error === 5){
@@ -130,7 +131,7 @@ class AuthScreen extends Component {
 
             var resultPasswordConfirmation = this.validatePasswordConfirm();
             if (!resultPasswordConfirmation){
-                erroresInicio = erroresInicio + "Las contraseñas no coinciden. ";
+                erroresInicio = erroresInicio + "Passwords don't match! ";
             }
 
             if (erroresInicio === ""){
@@ -144,162 +145,225 @@ class AuthScreen extends Component {
         return mostrarErrores;
     }
 
+    showLoginForm() {
+      var login = document.getElementById("auth-login");
+      var register = document.getElementById("auth-register");
+
+      login.style.display = "block";
+      register.style.display = "none";
+    }
+
+    showRegisterForm() {
+      var login = document.getElementById("auth-login");
+      var register = document.getElementById("auth-register");
+
+      login.style.display = "none";
+      register.style.display = "block";
+    }
 
     render() {
         const isLoggedIn = this.state.redirect;
         return(
-            <div className="main-auth-container">
-                <div className="container-form">
-                    <div className="top-container">
-                        <img src={logo} alt="logo" width={25}/>
-                    </div>
+            <div className="layout-scene-wrapper">
 
-                    <div>
-                        <img src={artwork_people} alt="people" width={350}/>
-                    </div>
-
-                    <Grid>
-                        <Row className="show-grid">
-                            <Col xs={4} xsPush={4}>
-                                <PanelGroup defaultActiveKey="1" className="panel-group" accordion>
-
-                                    <Panel header={<h1>Iniciar sesión</h1>} eventKey="1" className="text-transform-up-sp">
-                                        <div className="img-container">
-                                            <img src={user_pic} alt="user" />
-                                        </div>
-                                        <form onSubmit={(e)=>this.login(e)}>
-                                            <FormGroup>
-                                                <InputGroup className="form-element">
-                                                    <FormControl
-                                                        type="email"
-                                                        name="emailLogin"
-                                                        placeholder="Ingrese su correo"
-                                                        value={this.state.emailLogin}
-                                                        onChange={this.handleChange}
-                                                        required
-                                                    />
-                                                </InputGroup>
-                                            </FormGroup>
-                                            <FormGroup>
-                                                <InputGroup className="form-element">
-                                                    <FormControl
-                                                        name="passwordLogin"
-                                                        type="password"
-                                                        placeholder="Ingrese su contraseña"
-                                                        value={this.state.passwordLogin}
-                                                        onChange={this.handleChange}
-                                                        required
-                                                    />
-                                                </InputGroup>
-                                            </FormGroup>
-                                            <div className="error-msg" id="login-error-msg">
-                                                { this.errores1() }
-                                            </div>
-                                            <FormGroup>
-                                                <div className="forgot-password-lg">
-                                                    <Link to={'/resetpassword'}>¿Ha olvidado su contraseña?</Link>
-                                                </div>
-                                            </FormGroup>
-                                            <div>
-                                                <Button type="submit" className="button-s" block>Ingresar</Button>
-                                                {isLoggedIn ? (
-                                                    <Redirect  to="/dashboard" />
-                                                ) : (
-                                                    this.nothing()
-                                                )}
-
-
-
-                                            </div>
-                                        </form>
-                                    </Panel>
-
-                                    <Panel header={<h1>Crear cuenta</h1>} eventKey="2" className="text-transform-up-sp">
-                                        <form onSubmit={(e)=>this.register(e)}>
-                                            <FormGroup>
-                                                <InputGroup className="form-element">
-                                                    <FormControl
-                                                        name="nameUser"
-                                                        type="text"
-                                                        placeholder="Nombres"
-                                                        onChange={this.handleChange}
-                                                        value={this.state.nameUser}
-                                                        required
-                                                    />
-                                                </InputGroup>
-                                            </FormGroup>
-                                            <FormGroup>
-                                                <InputGroup className="form-element">
-                                                    <FormControl
-                                                        name="lastname"
-                                                        type="text"
-                                                        placeholder="Apellidos"
-                                                        onChange={this.handleChange}
-                                                        required
-                                                    />
-                                                </InputGroup>
-                                            </FormGroup>
-                                            <FormGroup>
-                                                <InputGroup className="form-element">
-                                                    <FormControl
-                                                        name="email"
-                                                        type="email"
-                                                        placeholder="Ingrese su correo"
-                                                        required
-                                                        onChange={this.handleChange}
-                                                        value={this.state.email}
-                                                    />
-                                                </InputGroup>
-                                            </FormGroup>
-                                            <FormGroup>
-                                                <InputGroup className="form-element">
-                                                    <FormControl
-                                                        name="password"
-                                                        type="password"
-                                                        placeholder="Elija su contraseña"
-                                                        onChange={this.handleChange}
-                                                        value={this.state.password}
-                                                        required
-                                                    />
-                                                </InputGroup>
-                                            </FormGroup>
-                                            <FormGroup>
-                                                <InputGroup className="form-element">
-                                                    <FormControl
-                                                        name="confirm_password"
-                                                        type="password"
-                                                        placeholder="Ingrese nuevamente su contraseña"
-                                                        onChange={this.handleChange}
-                                                        value={this.state.confirm_password}
-                                                        required
-                                                    />
-                                                </InputGroup>
-                                            </FormGroup>
-                                            <div className="politicas">
-                                                <FormGroup>
-                                                    <Checkbox inline onChange={this.handleCheckBox} required>
-                                                        Al crear tu cuenta, estás aceptando los términos del servicio y las políticas de privacidad de Freelanceros.
-                                                    </Checkbox>
-                                                </FormGroup>
-                                            </div>
-                                            <div className="error-msg" id="register-error-msg">
-                                                { this.errores2() }
-                                            </div>
-                                            <div>
-                                                <Button type = "submit" className="button-s" block>Crear cuenta</Button>
-                                            </div>
-                                        </form>
-                                    </Panel>
-
-                                </PanelGroup>
-                            </Col>
-                        </Row>
-                    </Grid>
+              <div className="layout-container-form">
+                <div className="layout-top-container">
+                  <Grid>
+                    <Row>
+                      <Col lg={6}>
+                        <img src={logo} alt="logo" width={45} className="layout-logoimg"/>
+                      </Col>
+                      <Col lg={3} className="layout-button-top-auth">
+                        <Button
+                          type="submit"
+                          className="button-override-font button-fillpadding button-auth"
+                          onClick={() => this.showLoginForm()}
+                          block>Login</Button>
+                      </Col>
+                      <Col lg={3} className="layout-button-top-auth">
+                        <Button
+                          type="submit"
+                          className="button-override-font button-fillpadding button-auth"
+                          onClick={() => this.showRegisterForm()}
+                          block>Register</Button>
+                      </Col>
+                    </Row>
+                  </Grid>
                 </div>
-                <div className="container-form">
-                    <div className="footer">
-                        &copy;2017, Manco Labs.
-                    </div>
+
+                <div className="layout-auth-main">
+                  <div>
+                      <img src={artwork_people} alt="people" width={250}/>
+                      <div className="layout-auth-title">
+                        CRM
+                      </div>
+                  </div>
+
+                  <Grid className="layout-login-container" id="auth-login">
+                      <Row>
+                          <Col lg={2}>
+                          </Col>
+                          <Col lg={2}>
+                          </Col>
+                          <Col lg={4}>
+                            <div className="layout-auth-title">
+                              Login
+                            </div>
+                            <div className="layout-usr-img">
+                                <img src={user_pic} alt="user" />
+                            </div>
+                            <form onSubmit={(e)=>this.login(e)}>
+                                <FormGroup>
+                                    <InputGroup>
+                                        <FormControl
+                                            type="email"
+                                            name="emailLogin"
+                                            placeholder="Input your eMail"
+                                            value={this.state.emailLogin}
+                                            onChange={this.handleChange}
+                                            required
+                                        />
+                                    </InputGroup>
+                                </FormGroup>
+                                <FormGroup>
+                                    <InputGroup>
+                                        <FormControl
+                                            name="passwordLogin"
+                                            type="password"
+                                            placeholder="Input your password"
+                                            value={this.state.passwordLogin}
+                                            onChange={this.handleChange}
+                                            required
+                                        />
+                                    </InputGroup>
+                                </FormGroup>
+                                <div className="error-msg" id="login-error-msg">
+                                    { this.errores1() }
+                                </div>
+                                <div>
+                                    <Button
+                                      type="submit"
+                                      bsStyle="primary"
+                                      className="button-override-font button-fillpadding"
+                                      block>Login</Button>
+                                    {isLoggedIn ? (
+                                        <Redirect  to="/dashboard" />
+                                    ) : (
+                                        this.nothing()
+                                    )}
+                                </div>
+                            </form>
+                          </Col>
+                          <Col lg={2}>
+                          </Col>
+                          <Col lg={2}>
+                          </Col>
+                      </Row>
+                  </Grid>
+
+                  <Grid className="layout-register-container" id="auth-register">
+                    <Row>
+                      <Col lg={2}>
+                      </Col>
+                      <Col lg={2}>
+                      </Col>
+                      <Col lg={4}>
+                        <div className="layout-auth-title">
+                          Register
+                        </div>
+                        <div className="layout-usr-img">
+                            <img src={user_pic} alt="user" />
+                        </div>
+                        <form onSubmit={(e)=>this.register(e)}>
+                            <FormGroup>
+                                <InputGroup>
+                                    <FormControl
+                                        name="nameUser"
+                                        type="text"
+                                        placeholder="Name"
+                                        onChange={this.handleChange}
+                                        value={this.state.nameUser}
+                                        required
+                                    />
+                                </InputGroup>
+                            </FormGroup>
+                            <FormGroup>
+                                <InputGroup>
+                                    <FormControl
+                                        name="lastname"
+                                        type="text"
+                                        placeholder="Surname"
+                                        onChange={this.handleChange}
+                                        required
+                                    />
+                                </InputGroup>
+                            </FormGroup>
+                            <FormGroup>
+                                <InputGroup>
+                                    <FormControl
+                                        name="email"
+                                        type="email"
+                                        placeholder="eMail"
+                                        required
+                                        onChange={this.handleChange}
+                                        value={this.state.email}
+                                    />
+                                </InputGroup>
+                            </FormGroup>
+                            <FormGroup>
+                                <InputGroup>
+                                    <FormControl
+                                        name="password"
+                                        type="password"
+                                        placeholder="Select password"
+                                        onChange={this.handleChange}
+                                        value={this.state.password}
+                                        required
+                                    />
+                                </InputGroup>
+                            </FormGroup>
+                            <FormGroup>
+                                <InputGroup>
+                                    <FormControl
+                                        name="confirm_password"
+                                        type="password"
+                                        placeholder="Input password again"
+                                        onChange={this.handleChange}
+                                        value={this.state.confirm_password}
+                                        required
+                                    />
+                                </InputGroup>
+                            </FormGroup>
+                            <div className="layout-policies">
+                                <FormGroup>
+                                    <Checkbox inline onChange={this.handleCheckBox} required>
+                                        By creating your user you agree to the user terms held within this company.
+                                    </Checkbox>
+                                </FormGroup>
+                            </div>
+                            <div className="error-msg" id="register-error-msg">
+                                { this.errores2() }
+                            </div>
+                            <div>
+                                <Button
+                                  type="submit"
+                                  bsStyle="primary"
+                                  className="button-override-font button-fillpadding"
+                                  block>Create account</Button>
+                            </div>
+                        </form>
+                      </Col>
+                      <Col lg={2}>
+                      </Col>
+                      <Col lg={2}>
+                      </Col>
+                    </Row>
+                  </Grid>
+                </div>
+
+                </div>
+                <div className="layout-footer">
+                    &copy;2018, Cusbromen Labs.
                 </div>
             </div>
         )
