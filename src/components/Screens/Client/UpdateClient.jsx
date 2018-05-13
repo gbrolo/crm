@@ -235,7 +235,7 @@ class UpdateClient extends Component {
     this.initTable();
   }
 
-  async initTable() {
+  initTable = async () => {
     let url = '/clients?count=25'
     try{
       let response = await axios.get(url, {
@@ -314,7 +314,7 @@ class UpdateClient extends Component {
     this.addToUpdate(row);
   }
 
-  async updateData() {
+  updateData = async () => {
     //var rowToSend = JSON.parse(localStorage.getItem('rowToUpdate'));
     //console.log('row is', rowToSend);
 
@@ -368,7 +368,7 @@ class UpdateClient extends Component {
     }
   }
 
-  async deleteUsers() {
+  deleteUsers = async () => {
     let idsToDelete = JSON.parse(localStorage.getItem('selectedArray'));
     try {
       await axios.delete('/clients', {
@@ -416,7 +416,7 @@ class UpdateClient extends Component {
     alert.style.display = "none";
   }
 
-  addNewColumn() {
+  addNewColumn = async () => {
 
   }
 
