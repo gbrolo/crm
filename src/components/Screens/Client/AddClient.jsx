@@ -26,50 +26,49 @@ class AddClient extends Component {
       errors: ''
     }
 
-    this.onChangeDate = this.onChangeDate.bind(this)
   }
 
-  onChangeDate(birthDate) {
+  onChangeDate = (birthDate) => {
     this.setState({ birthDate });
     this.hideAlert();
-  }
+  };
 
-  onChangeName(name) {
+  onChangeName = (name) => {
     this.setState({ name });
     this.hideAlert();
-  }
+  };
 
-  onChangeLastName(lastname) {
+  onChangeLastName = (lastname) => {
     this.setState({ lastname });
     this.hideAlert();
-  }
+  };
 
-  onChangeEmail(email) {
+  onChangeEmail = (email) => {
     this.setState({ email });
     this.hideAlert();
-  }
+  };
 
-  onChangeSex(sex) {
+  onChangeSex = (sex) => {
     this.setState({ sex });
     this.hideAlert();
-  }
+  };
 
-  OnChangeCivilState(state) {
+  OnChangeCivilState = (state) => {
     this.setState({ state });
     this.hideAlert();
-  }
+  };
 
-  OnChangeCountry(country) {
+  OnChangeCountry = (country) => {
     this.setState({ country });
     this.hideAlert();
-  }
+  };
 
-  OnChangeTwitterHandle(twitter) {
+  OnChangeTwitterHandle = (twitter) => {
     this.setState({ twitter });
     this.hideAlert();
-  }
+  };
 
-  createUser() {
+  createUser = () => {
     let noErrors = true;
     let errorMsg = "";
 
@@ -93,7 +92,7 @@ class AddClient extends Component {
 
     }
     console.log(this.state);
-  }
+  };
 
   showAlert(event) {
     event.preventDefault();
