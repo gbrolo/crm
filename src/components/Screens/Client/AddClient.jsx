@@ -110,7 +110,6 @@ class AddClient extends Component {
       country: this.state.country,
       twitterHandle: this.state.twitter
     };
-    console.log(data)
     try {
       await axios.post('/addclient', qs.stringify(data))
       // TODO add success message 

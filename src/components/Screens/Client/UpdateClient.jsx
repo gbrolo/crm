@@ -365,7 +365,6 @@ class UpdateClient extends Component {
           'Authorization': 'Bearer ' + localStorage.getItem('cbm_token')
         }
       });
-
     }catch(error) {
       // TODO show that ids cant be deleted
       console.error(error);
