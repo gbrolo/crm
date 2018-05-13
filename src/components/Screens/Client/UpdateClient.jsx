@@ -183,7 +183,7 @@ const columns =  [{
     }
   }];
 
-const RemoteAll = ({data, page, sizePerPage, onTableChange, totalSize}) => (
+const RemoteAll = ({data, page, sizePerPage, onTableChange, totalSize, selectRow}) => (
   <div>
     <BootstrapTable
       remote={ { pagination: true } }
@@ -194,6 +194,8 @@ const RemoteAll = ({data, page, sizePerPage, onTableChange, totalSize}) => (
       pagination={ paginationFactory({ page, sizePerPage, totalSize }) }
       onTableChange={ onTableChange }
       overlay={ overlayFactory({ spinner: true, background: 'rgba(192,192,192,0.3)' }) }
+      cellEdit={ cellEditFactory({ mode: 'click' }) }
+      selectRow={ selectRow }
     />
   </div>
 );
@@ -283,30 +285,6 @@ class UpdateClient extends Component {
     const currentIndex = (page - 1) * sizePerPage;
     // Get values from backend again
     this.refreshTable(page, filters);
-    // setTimeout(() => {
-    //   const result = userTable.filter((row) => {
-    //     let valid = true;
-    //     for (const dataField in filters) {
-    //       const { filterVal, filterType, comparator } = filters[dataField];
-
-    //       if (filterType === 'TEXT') {
-    //         if (comparator === Comparator.LIKE) {
-    //           valid = row[dataField].toString().indexOf(filterVal) > -1;
-    //         } else {
-    //           valid = row[dataField] === filterVal;
-    //         }
-    //       }
-    //       if (!valid) break;
-    //     }
-    //     return valid;
-    //   });
-    //   this.setState(() => ({
-    //     page,
-    //     data: result.slice(currentIndex, currentIndex + sizePerPage),
-    //     totalSize: result.length,
-    //     sizePerPage
-    //   }));
-    // }, 2000);
   }
 
 
@@ -376,8 +354,22 @@ class UpdateClient extends Component {
     }
   }
 
-  deleteUsers() {
-    console.log("ids to delete", JSON.parse(localStorage.getItem('selectedArray')));
+  async deleteUsers() {
+    let idsToDelete = JSON.parse(localStorage.getItem('selectedArray'));
+    try {
+      await axios.delete('/clients', {
+        params: {
+          usersIds: idsToDelete
+        },
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('cbm_token')
+        }
+      });
+
+    }catch(error) {
+      // TODO show that ids cant be deleted
+      console.error(error);
+    }
   }
 
   showAlertUpdate() {
@@ -420,6 +412,7 @@ class UpdateClient extends Component {
       hideSelectColumn: true,
       clickToSelect: true,
       clickToEdit: true,
+      defaultChecked: true,
       style: { backgroundColor: '#c8e6c9' },
       onSelect: (row, isSelect, rowIndex, e) => {
         localStorage.setItem('selectedRow', JSON.stringify(row));
@@ -554,6 +547,7 @@ class UpdateClient extends Component {
                   sizePerPage={ this.state.sizePerPage }
                   totalSize={ this.state.totalSize }
                   onTableChange={ this.handleTableChange }
+                  selectRow={ selectRow }
                 />
               </div>
             </Col>

@@ -115,9 +115,11 @@ class AddClient extends Component {
       await axios.post('/addclient', qs.stringify(data))
       // TODO add success message 
     } catch(error) {
-      const errorMsg = error.response.data.data.errorMessage;
-      this.setState({errors: errorMsg});
-      document.getElementById('register-error-msg').style.display = 'block';
+      // TODO add error message
+      console.log(error.response);
+      // const errorMsg = error.response.data.data.errorMessage;
+      // this.setState({errors: errorMsg});
+      // document.getElementById('register-error-msg').style.display = 'block';
     }
 
   }
