@@ -4,13 +4,39 @@ import { Button, Grid, Row, Col, Tab, Nav, NavItem, PageHeader } from 'react-boo
 
 import BootstrapTable from 'react-bootstrap-table-next';
 import cellEditFactory from 'react-bootstrap-table2-editor';
-import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
+import filterFactory, { textFilter, selectFilter, Comparator } from 'react-bootstrap-table2-filter';
 import paginationFactory from 'react-bootstrap-table2-paginator';
+
+import overlayFactory from 'react-bootstrap-table2-overlay';
+
 
 // Styles
 import '../../../styles/_layout.css';
 import '../../../styles/_buttons.css';
 import '../../../styles/_updateclient.css';
+
+
+import axios from '../../Server';
+
+
+
+
+
+const RemoteAll = ({data, page, sizePerPage, onTableChange, totalSize, columns}) => (
+  <div>
+    <BootstrapTable
+      remote={ { pagination: true } }
+      keyField="id"
+      data={ data }
+      columns={ columns }
+      filter={ filterFactory() }
+      pagination={ paginationFactory({ page, sizePerPage, totalSize }) }
+      onTableChange={ onTableChange }
+      overlay={ overlayFactory({ spinner: true, background: 'rgba(192,192,192,0.3)' }) }
+    />
+  </div>
+);
+
 
 class ShowCatalogue extends Component {
   constructor(props) {
@@ -23,14 +49,34 @@ class ShowCatalogue extends Component {
         dataField: 'name',
         text: 'Name',
         filter: textFilter()
+      }, {
+        dataField: 'userEmail',
+        text: 'Owner email',
+        filter: textFilter()
+      }, {
+        dataField: 'technology',
+        text: 'Technology',
+        filter: textFilter()
+      }, {
+        dataField: 'state',
+        text: 'Project state',
+        filter: textFilter()
+      }, {
+        dataField: 'startDate',
+        text: 'Start date',
+        filter: textFilter()
+      }, {
+        dataField: 'delivery',
+        text: 'Delivery',
+        filter: textFilter()
       }],
 
       secondColumns: [{
         dataField: 'id',
         text: 'ID'
       }, {
-        dataField: 'name',
-        text: 'Name',
+        dataField: 'gender',
+        text: 'Gender',
         filter: textFilter()
       }],
 
@@ -38,8 +84,8 @@ class ShowCatalogue extends Component {
         dataField: 'id',
         text: 'ID'
       }, {
-        dataField: 'name',
-        text: 'Name',
+        dataField: 'country',
+        text: 'Country',
         filter: textFilter()
       }],
 
@@ -47,72 +93,268 @@ class ShowCatalogue extends Component {
         dataField: 'id',
         text: 'ID'
       }, {
-        dataField: 'name',
-        text: 'Name',
+        dataField: 'civilState',
+        text: 'Civil State',
         filter: textFilter()
       }],
 
-      firstTable: [
-        {
-          id: 0,
-          name: "product 1 table 1 name"
-        },
-        {
-          id: 1,
-          name: "product 2 table 1 name"
-        },
-        {
-          id: 2,
-          name: "product 3 table 1 name"
-        }
-      ],
+      firstTable: [],
+      firstPage: 1,
+      sizePerPage: 200,
+      firstTotalSize: 0,
+      secondTable: [],
+      secondPage: 1,
+      secondTotalSize: 0,
+      thirdTable: [],
+      thirdPage: 1,
+      thirdTotalSize: 0,
+      fourthTable: [],
+      fourthPage: 1,
+      fourthTotalSize: 0
+    }
 
-      secondTable: [
-        {
-          id: 0,
-          name: "product 1 table 2 name"
-        },
-        {
-          id: 1,
-          name: "product 2 table 2 name"
-        },
-        {
-          id: 2,
-          name: "product 3 table 2 name"
-        }
-      ],
+    this.initProjectTable();
+    this.initGenderTable();
+    this.initCountryTable();
+    this.initCivilStateTable();
+  }
 
-      thirdTable: [
-        {
-          id: 0,
-          name: "product 1 table 3 name"
-        },
-        {
-          id: 1,
-          name: "product 2 table 3 name"
-        },
-        {
-          id: 2,
-          name: "product 3 table 3 name"
-        }
-      ],
+  initProjectTable = async () => {
+    let url = '/projects?count=25'
+    try{
+      let response = await axios.get(url, {
+        headers: {'Authorization': 'Bearer ' + localStorage.getItem('cbm_token')}
+      });
+      this.setState({
+        firstTotalSize: response.data.count,
+        firstTable: response.data.data
+      });
 
-      fourthTable: [
-        {
-          id: 0,
-          name: "product 1 table 4 name"
-        },
-        {
-          id: 1,
-          name: "product 2 table 4 name"
-        },
-        {
-          id: 2,
-          name: "product 3 table 4 name"
+    }catch(error) {
+      console.error(error);
+    }
+  };
+
+  initGenderTable = async () => {
+    let url = '/genders'
+    try{
+      let response = await axios.get(url, {
+        headers: {'Authorization': 'Bearer ' + localStorage.getItem('cbm_token')}
+      });
+      this.setState({
+        secondTotalSize: response.data.count,
+        secondTable: response.data.data
+      });
+
+    }catch(error) {
+      console.error(error);
+    } 
+  };
+
+  initCountryTable = async () => {
+    let url = '/countries'
+    try{
+      let response = await axios.get(url, {
+        headers: {'Authorization': 'Bearer ' + localStorage.getItem('cbm_token')}
+      });
+      console.log(response);
+      this.setState({
+        thirdTotalSize: response.data.count,
+        thirdTable: response.data.data
+      });
+
+    }catch(error) {
+      console.error(error);
+    } 
+  };
+
+  initCivilStateTable = async () => {
+    let url = '/civilstates'
+    try{
+      let response = await axios.get(url, {
+        headers: {'Authorization': 'Bearer ' + localStorage.getItem('cbm_token')}
+      });
+      console.log(response);
+      this.setState({
+        fourthTotalSize: response.data.count,
+        fourthTable: response.data.data
+      });
+
+    }catch(error) {
+      console.error(error);
+    } 
+  };
+
+
+
+
+
+  async refreshProjects(page, filters) {
+    let url = '/projects?count=200'
+    // if (this.state.cursor !== 0) {
+    //   url += '&cursor=' + this.state.cursor;
+    // }
+    try{
+      this.state.filters = filters;
+      let response = await axios.get(url, {
+        headers: {'Authorization': 'Bearer ' + localStorage.getItem('cbm_token')}
+      });
+      const result = response.data.data.filter((row) => {
+        let valid = true;
+        for (const dataField in filters) {
+          const { filterVal, filterType, comparator } = filters[dataField];
+          if (filterType === 'TEXT') {
+            if (comparator === Comparator.LIKE) {
+              valid = row[dataField].toString().indexOf(filterVal) > -1;
+            } else {
+              valid = row[dataField] === filterVal;
+            }
+          }
+          if (!valid) break;
         }
-      ]
+        return valid;
+      });
+
+      this.setState({
+        firstPage: page,
+        firstTotalSize: response.data.count,
+        firstTable: result
+      });
+    }catch(error) {
+      console.error(error);
     }
   }
+
+
+  handleProjectTable = (type, { page, sizePerPage, filters }) => {
+    // Get values from backend again
+    this.refreshProjects(page, filters);
+  }
+
+  async refreshGenders(page, filters) {
+    let url = '/genders'
+    // if (this.state.cursor !== 0) {
+    //   url += '&cursor=' + this.state.cursor;
+    // }
+    try{
+      this.state.filters = filters;
+      let response = await axios.get(url, {
+        headers: {'Authorization': 'Bearer ' + localStorage.getItem('cbm_token')}
+      });
+      const result = response.data.data.filter((row) => {
+        let valid = true;
+        for (const dataField in filters) {
+          const { filterVal, filterType, comparator } = filters[dataField];
+          if (filterType === 'TEXT') {
+            if (comparator === Comparator.LIKE) {
+              valid = row[dataField].toString().indexOf(filterVal) > -1;
+            } else {
+              valid = row[dataField] === filterVal;
+            }
+          }
+          if (!valid) break;
+        }
+        return valid;
+      });
+
+      this.setState({
+        secondPage: page,
+        secondTotalSize: response.data.count,
+        secondTable: result
+      });
+    }catch(error) {
+      console.error(error);
+    }
+  }
+
+  handleGenderTable = (type, { page, sizePerPage, filters }) => {
+    // Get values from backend again
+    this.refreshGenders(page, filters);
+  }
+
+  async refreshCountries(page, filters) {
+    let url = '/countries'
+    // if (this.state.cursor !== 0) {
+    //   url += '&cursor=' + this.state.cursor;
+    // }
+    try{
+      this.state.filters = filters;
+      let response = await axios.get(url, {
+        headers: {'Authorization': 'Bearer ' + localStorage.getItem('cbm_token')}
+      });
+      const result = response.data.data.filter((row) => {
+        let valid = true;
+        for (const dataField in filters) {
+          const { filterVal, filterType, comparator } = filters[dataField];
+          if (filterType === 'TEXT') {
+            if (comparator === Comparator.LIKE) {
+              valid = row[dataField].toString().indexOf(filterVal) > -1;
+            } else {
+              valid = row[dataField] === filterVal;
+            }
+          }
+          if (!valid) break;
+        }
+        return valid;
+      });
+
+      this.setState({
+        thirdPage: page,
+        thirdTotalSize: response.data.count,
+        thirdTable: result
+      });
+    }catch(error) {
+      console.error(error);
+    }
+  }
+
+  handleCountryTable = (type, { page, sizePerPage, filters }) => {
+    // Get values from backend again
+    this.refreshCountries(page, filters);
+  }
+
+  async refreshCivilStates(page, filters) {
+    let url = '/civilstates'
+    // if (this.state.cursor !== 0) {
+    //   url += '&cursor=' + this.state.cursor;
+    // }
+    try{
+      this.state.filters = filters;
+      let response = await axios.get(url, {
+        headers: {'Authorization': 'Bearer ' + localStorage.getItem('cbm_token')}
+      });
+      const result = response.data.data.filter((row) => {
+        let valid = true;
+        for (const dataField in filters) {
+          const { filterVal, filterType, comparator } = filters[dataField];
+          if (filterType === 'TEXT') {
+            if (comparator === Comparator.LIKE) {
+              valid = row[dataField].toString().indexOf(filterVal) > -1;
+            } else {
+              valid = row[dataField] === filterVal;
+            }
+          }
+          if (!valid) break;
+        }
+        return valid;
+      });
+
+      this.setState({
+        fourthPage: page,
+        fourthTotalSize: response.data.count,
+        fourthTable: result
+      });
+    }catch(error) {
+      console.error(error);
+    }
+  }
+
+  handleCivilStateTable = (type, { page, sizePerPage, filters }) => {
+    // Get values from backend again
+    this.refreshCivilStates(page, filters);
+  }
+
+
 
   showTable(toShow) {
     var cat1 = document.getElementById("cat-1");
@@ -217,7 +459,7 @@ class ShowCatalogue extends Component {
                         className="button-size-sm button-prim"
                         onClick={ () => this.showTable(1) }
                         block>
-                          Table 1
+                        Projects
                       </Button>
                   </div>
                   <div className="updateclient-buttons-container" id="left">
@@ -225,7 +467,7 @@ class ShowCatalogue extends Component {
                         className="button-size-sm button-prim"
                         onClick={ () => this.showTable(2) }
                         block>
-                          Table 2
+                        Gender
                       </Button>
                   </div>
                   <div className="updateclient-buttons-container" id="left">
@@ -233,7 +475,7 @@ class ShowCatalogue extends Component {
                         className="button-size-sm button-prim"
                         onClick={ () => this.showTable(3) }
                         block>
-                          Table 3
+                        Country
                       </Button>
                   </div>
                   <div className="updateclient-buttons-container" id="left">
@@ -241,7 +483,7 @@ class ShowCatalogue extends Component {
                         className="button-size-sm button-prim"
                         onClick={ () => this.showTable(4) }
                         block>
-                          Table 4
+                        Civil State
                       </Button>
                   </div>
                 </div>
@@ -255,9 +497,10 @@ class ShowCatalogue extends Component {
             <Col xs={6} sm={6} md={6} lg={12}>
               <div className="updateclient-tablecontainer">
                 <div className="updateclient-instr-title">
-                  <b>Table 1:</b>
+                  <b>Projects :</b>
                   <hr id="cat"/>
                 </div>
+<<<<<<< HEAD
                 <div className="updateclient-buttons-container">
                   <div className="updateclient-buttons-container" id="left">
                      <Button
@@ -274,11 +517,17 @@ class ShowCatalogue extends Component {
                   hover
                   condensed
                   keyField='id'
+=======
+                <RemoteAll
+>>>>>>> 11a774d042e2beefff01734592eba4752c99c4e4
                   data={ this.state.firstTable }
-                  columns ={this.state.firstColumns}
-                  filter={ filterFactory() }
-                  pagination={ paginationFactory() }/>
-              </div>
+                  page={ this.state.firstPage }
+                  sizePerPage={ this.state.sizePerPage }
+                  totalSize={ this.state.firstTotalSize }
+                  onTableChange={ this.handleProjectTable }
+                  columns={ this.state.firstColumns }
+                />
+                </div>
             </Col>
           </Row>
         </Grid>
@@ -288,9 +537,10 @@ class ShowCatalogue extends Component {
             <Col xs={6} sm={6} md={6} lg={12}>
               <div className="updateclient-tablecontainer">
                 <div className="updateclient-instr-title">
-                  <b>Table 2:</b>
+                  <b>Gender :</b>
                   <hr id="cat"/>
                 </div>
+<<<<<<< HEAD
                 <div className="updateclient-buttons-container">
                   <div className="updateclient-buttons-container" id="left">
                      <Button
@@ -311,6 +561,16 @@ class ShowCatalogue extends Component {
                   columns ={this.state.secondColumns}
                   filter={ filterFactory() }
                   pagination={ paginationFactory() }/>
+=======
+                <RemoteAll
+                  data={ this.state.secondTable}
+                  page={ this.state.secondPage}
+                  sizePerPage={ this.state.sizePerPage }
+                  totalSize={ this.state.secondTotalSize}
+                  onTableChange={ this.handleGenderTable }
+                  columns={ this.state.secondColumns }
+                />
+>>>>>>> 11a774d042e2beefff01734592eba4752c99c4e4
               </div>
             </Col>
           </Row>
@@ -321,9 +581,10 @@ class ShowCatalogue extends Component {
             <Col xs={6} sm={6} md={6} lg={12}>
               <div className="updateclient-tablecontainer">
                 <div className="updateclient-instr-title">
-                  <b>Table 3:</b>
+                  <b>Country:</b>
                   <hr id="cat"/>
                 </div>
+<<<<<<< HEAD
                 <div className="updateclient-buttons-container">
                   <div className="updateclient-buttons-container" id="left">
                      <Button
@@ -344,6 +605,16 @@ class ShowCatalogue extends Component {
                   columns ={this.state.thirdColumns}
                   filter={ filterFactory() }
                   pagination={ paginationFactory() }/>
+=======
+                <RemoteAll
+                  data={ this.state.thirdTable}
+                  page={ this.state.thirdPage}
+                  sizePerPage={ this.state.sizePerPage }
+                  totalSize={ this.state.thirdTotalSize}
+                  onTableChange={ this.handleCountryTable}
+                  columns={ this.state.thirdColumns}
+                />
+>>>>>>> 11a774d042e2beefff01734592eba4752c99c4e4
               </div>
             </Col>
           </Row>
@@ -354,9 +625,10 @@ class ShowCatalogue extends Component {
             <Col xs={6} sm={6} md={6} lg={12}>
               <div className="updateclient-tablecontainer">
                 <div className="updateclient-instr-title">
-                  <b>Table 4:</b>
+                  <b>Country:</b>
                   <hr id="cat"/>
                 </div>
+<<<<<<< HEAD
                 <div className="updateclient-buttons-container">
                   <div className="updateclient-buttons-container" id="left">
                      <Button
@@ -377,6 +649,16 @@ class ShowCatalogue extends Component {
                   columns ={this.state.fourthColumns}
                   filter={ filterFactory() }
                   pagination={ paginationFactory() }/>
+=======
+                <RemoteAll
+                  data={ this.state.fourthTable}
+                  page={ this.state.fourthPage}
+                  sizePerPage={ this.state.sizePerPage }
+                  totalSize={ this.state.fourthTotalSize}
+                  onTableChange={ this.handleCivilStateTable}
+                  columns={ this.state.fourthColumns}
+                />
+>>>>>>> 11a774d042e2beefff01734592eba4752c99c4e4
               </div>
             </Col>
           </Row>

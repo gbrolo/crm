@@ -207,6 +207,7 @@ class ShowClients extends Component {
     }
     data = encodeURI(csv);
 
+
     link = document.createElement('a');
     link.setAttribute('href', data);
     link.setAttribute('download', filename);
