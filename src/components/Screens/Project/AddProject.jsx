@@ -23,6 +23,7 @@ class AddProject extends Component {
       name: '',
       technology: '',
       state: '',
+      email: '',
       noErrors: true,
       errors: '',
       successMsg: '',
@@ -43,6 +44,11 @@ class AddProject extends Component {
 
   onChangeName = (name) => {
     this.setState({ name });
+    this.hideAlert();
+  };
+
+  onChangeEmail = (email) => {
+    this.setState({ email });
     this.hideAlert();
   };
 
@@ -80,6 +86,7 @@ class AddProject extends Component {
     senData = async () => {
     const data = {
       name: this.state.name,
+      email: this.state.email,
       technology: this.state.technology,
       state: this.state.state,
       startDate: this.state.startDate,
@@ -92,6 +99,7 @@ class AddProject extends Component {
 
       // Reset all fields
         document.getElementById('name-input').value = '';
+        document.getElementById('email-input').value = '';
         document.getElementById('technology-input').value = '';
         document.getElementById('state-input').value = '';
         document.getElementById('register-error-msg').style.display = 'none';
@@ -147,11 +155,23 @@ class AddProject extends Component {
                 </FormGroup>
 
                 <div className="addclient-form-input">
+                  eMail
+                </div>
+                <FormGroup>
+                   <InputGroup className="addclient-form-input-element">
+                     <FormControl type="text" placeholder="eMail" className="addclient-form-input-control" id="email-input"
+                     onChange={(event) => this.onChangeEmail(event.target.value)}
+                     required
+                     />
+                   </InputGroup>
+                </FormGroup>
+
+                <div className="addclient-form-input">
                   Technology
                 </div>
                 <FormGroup>
                    <InputGroup className="addclient-form-input-element">
-                     <FormControl type="text" placeholder="Last Name" className="addclient-form-input-control" id="technology-input"
+                     <FormControl type="text" placeholder="Technology" className="addclient-form-input-control" id="technology-input"
                      onChange={(event) => this.onChangeTechnology(event.target.value)}
                      required
                      />
