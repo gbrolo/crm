@@ -91,7 +91,14 @@ class ClientsTwitterInfo extends Component {
   }
 
   searchQuery() {
-    // search tweets here
+      // Get twitter username
+      var username = this.state.tname;
+      var searchWord = this.state.searchText;
+
+      // Query here todo: Get the tweets matching
+
+
+      // search tweets here
     var x = document.getElementById('tw-results');
     x.style.display = "block";
   }
