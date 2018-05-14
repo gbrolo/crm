@@ -183,7 +183,7 @@ const columns =  [{
     }
   }];
 
-const RemoteAll = ({data, page, sizePerPage, onTableChange, totalSize, selectRow, afterSaveCell}) => (
+const RemoteAll = ({data, page, sizePerPage, onTableChange, totalSize, selectRow, afterSaveCell, columns}) => (
   <div>
     <BootstrapTable
       remote={ { pagination: true } }
@@ -228,6 +228,8 @@ class UpdateClient extends Component {
       sizePerPage: 25,
       cursor: 0,
       filters: {},
+      columns: columns,
+      newColName: '',
       update: {data: []}
     };
 
@@ -417,7 +419,31 @@ class UpdateClient extends Component {
   }
 
   addNewColumn = async () => {
-
+    this.state.columns.push(
+      {
+        dataField: 'test',
+        text: 'testazo',
+        filter: textFilter({caseSensitive: true}),
+        validator: (newValue, row, column) => {
+          if (newValue === "") {
+            alert('Field must not be empty');
+            return {
+              valid: false,
+              message: 'Field must not be empty'
+            };
+          }
+          if (validateEmail(newValue) === false) {
+            alert('Please enter a valid email');
+            return {
+              valid: false,
+              message: 'Please enter a valid email'
+            };
+          }
+          return true;
+        }
+      }
+      )
+    this.setState({ columns: this.state.columns })
   }
 
   render() {
@@ -562,7 +588,8 @@ class UpdateClient extends Component {
                   totalSize={ this.state.totalSize }
                   onTableChange={ this.handleTableChange }
                   selectRow={ selectRow }
-                  afterSaveCell={this.updateUserTable}
+                  afterSaveCell={ this.updateUserTable }
+                  columns={ this.state.columns }
                 />
               </div>
             </Col>

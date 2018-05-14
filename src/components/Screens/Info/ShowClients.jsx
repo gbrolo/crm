@@ -2,85 +2,93 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Button, Grid, Row, Col, PageHeader } from 'react-bootstrap';
 import { Redirect } from 'react-router'
+import PropTypes from 'prop-types';
 
 import BootstrapTable from 'react-bootstrap-table-next';
 import cellEditFactory from 'react-bootstrap-table2-editor';
-import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
+import filterFactory, { textFilter, selectFilter, Comparator } from 'react-bootstrap-table2-filter';
 import paginationFactory from 'react-bootstrap-table2-paginator';
+import overlayFactory from 'react-bootstrap-table2-overlay';
+import qs from 'qs'
+
+import axios from '../../Server';
+
 
 // Styles
 import '../../../styles/_layout.css';
 import '../../../styles/_buttons.css';
 import '../../../styles/_updateclient.css';
 
+const columns =  [{ 
+        dataField: 'id', 
+        text: 'ID' 
+      }, { 
+        dataField: 'name', 
+        text: 'Name', 
+        filter: textFilter() 
+      }, { 
+        dataField: 'email', 
+        text: 'Email', 
+        filter: textFilter({caseSensitive: true}) 
+      }, { 
+        dataField: 'gender', 
+        text: 'Gender', 
+        filter: textFilter({caseSensitive: true}) 
+      }, { 
+        dataField: 'civstate', 
+        text: 'Civil State' 
+      }, { 
+        dataField: 'birthDate', 
+        text: 'Birth Date' 
+      }, { 
+        dataField: 'country', 
+        text: 'Country' 
+      }, { 
+        dataField: 'twitterHandle', 
+        text: 'Twitter Handle' 
+      }]
+
+const RemoteAll = ({data, page, sizePerPage, onTableChange, totalSize, selectRow, afterSaveCell, columns}) => (
+  <div>
+    <BootstrapTable
+      remote={ { pagination: true } }
+      keyField="id"
+      data={ data }
+      columns={ columns }
+      filter={ filterFactory() }
+      pagination={ paginationFactory({ page, sizePerPage, totalSize }) }
+      onTableChange={ onTableChange }
+      overlay={ overlayFactory({ spinner: true, background: 'rgba(192,192,192,0.3)' }) }
+      cellEdit={ cellEditFactory({
+       mode: 'click',
+       afterSaveCell: (oldValue, newValue, row, column) => {afterSaveCell(oldValue, newValue, row, column);}
+     }) }
+      selectRow={ selectRow }
+    />
+  </div>
+);
+
+RemoteAll.propTypes = {
+  data: PropTypes.array.isRequired,
+  page: PropTypes.number.isRequired,
+  totalSize: PropTypes.number.isRequired,
+  sizePerPage: PropTypes.number.isRequired,
+  onTableChange: PropTypes.func.isRequired
+};
 
 
 class ShowClients extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      columns: [{
-        dataField: 'id',
-        text: 'ID'
-      }, {
-        dataField: 'name',
-        text: 'Name',
-        filter: textFilter()
-      }, {
-        dataField: 'email',
-        text: 'Email',
-        filter: textFilter({caseSensitive: true})
-      }, {
-        dataField: 'sex',
-        text: 'Sex',
-        filter: textFilter({caseSensitive: true})
-      }, {
-        dataField: 'civstate',
-        text: 'Civil State'
-      }, {
-        dataField: 'birthDate',
-        text: 'Birth Date'
-      }, {
-        dataField: 'country',
-        text: 'Country'
-      }, {
-        dataField: 'twitterHandle',
-        text: 'Twitter Handle'
-      }],
-
-      userTable: [
-        {
-          id: 0,
-          name: "Juan Gonzalez",
-          email: "jgonzalez@cusbromenlabs.com",
-          sex: "M",
-          civstate: "single",
-          birthDate: "1997-02-02",
-          country: "Guatemala",
-          twitterHandle: "jgonz"
-        },
-        {
-          id: 1,
-          name: "Alvaro Arzu",
-          email: "irigoyen@cusbromenlabs.com",
-          sex: "M",
-          civstate: "single",
-          birthDate: "1750-02-02",
-          country: "Guatemala",
-          twitterHandle: "arzu"
-        },
-        {
-          id: 2,
-          name: "Naruto Uzumaki",
-          email: "uzumaki@cusbromenlabs.com",
-          sex: "M",
-          civstate: "married",
-          birthDate: "1997-05-02",
-          country: "Japan",
-          twitterHandle: "naruto"
-        }
-      ],
-
+      columns: columns,
+      userTable: [],
+      data: [],
+      page: 1,
+      data: [],
+      totalSize: 0,
+      sizePerPage: 25,
+      cursor: 0,
       tphotoLink: 'https://pbs.twimg.com/profile_images/455870091138056193/UH1r-I-e_200x200.jpeg',
       tname: 'Twitter User',
       tfavs: '0',
@@ -88,10 +96,69 @@ class ShowClients extends Component {
       tfollowers: '0',
       tfollows: '0',
       tlasttweets: [],
-
       redirectToProfile: false
+    };
+
+    // Get first page
+    this.initTable();
+  }
+
+  initTable = async () => {
+    let url = '/clients?count=25'
+    try{
+      let response = await axios.get(url, {
+        headers: {'Authorization': 'Bearer ' + localStorage.getItem('cbm_token')}
+      });
+      this.setState({
+        totalSize: response.data.count,
+        data: response.data.data
+      });
+    }catch(error) {
+      console.error(error);
     }
   }
+
+  async refreshTable(page, filters) {
+    let url = '/clients?count=25'
+    if (this.state.cursor !== 0) {
+      url += '&cursor=' + this.state.cursor;
+    }
+    try{
+      this.state.filters = filters;
+      let response = await axios.get(url, {
+        headers: {'Authorization': 'Bearer ' + localStorage.getItem('cbm_token')}
+      });
+      const result = response.data.data.filter((row) => {
+        let valid = true;
+        for (const dataField in filters) {
+          const { filterVal, filterType, comparator } = filters[dataField];
+          if (filterType === 'TEXT') {
+            if (comparator === Comparator.LIKE) {
+              valid = row[dataField].toString().indexOf(filterVal) > -1;
+            } else {
+              valid = row[dataField] === filterVal;
+            }
+          }
+          if (!valid) break;
+        }
+        return valid;
+      });
+      this.setState({
+        page: page,
+        totalSize: response.data.count,
+        data: result
+      });
+    }catch(error) {
+      console.error(error);
+    }
+  }
+
+
+  handleTableChange = (type, { page, sizePerPage, filters }) => {
+    // Get values from backend again
+    this.refreshTable(page, filters);
+  }
+
 
   convertArrayOfObjectsToCSV(args) {
     var result, ctr, keys, columnDelimiter, lineDelimiter, data;
@@ -144,7 +211,7 @@ class ShowClients extends Component {
     link.click();
   }
 
-  showProfile() {
+  showProfile = async () => {
     var selectedRow = JSON.parse(localStorage.getItem('selectedRowShow'));
     if (selectedRow !== null) {
       var twitterHandle = selectedRow.twitterHandle;
@@ -152,6 +219,17 @@ class ShowClients extends Component {
       // hacer un request a la api con el twitterHandle que devuelva:
       // foto, nombre, descripcion, #favs, #tweets, #followers, #follows, array con los ultimos 30 tweets
       // cambiar el valor del selectedRowShow
+
+
+      // API REQEUEST, TODO 
+      // Concatenate with the real twitter handle, NOTE: @ must be included
+      let url = '/twitterprofile?handle=@jorocuva'
+      let response = await axios.get(url, {
+        headers: {'Authorization': 'Bearer ' + localStorage.getItem('cbm_token')}
+      });
+
+      // PRINTING Twitter INFO
+      console.log('Twitter INFO', response.data.data);
       localStorage.setItem('selectedRowShow', null);
 
       // luego del request, cambiar los valores del state correspondientes con los resultados del request
@@ -192,6 +270,8 @@ class ShowClients extends Component {
   nothing() {
     console.log('no click yet');
   }
+
+
 
   render() {
     const _this = this;
@@ -265,16 +345,16 @@ class ShowClients extends Component {
 
                   </div>
                 </div>
-                <BootstrapTable
-                  striped
-                  hover
-                  condensed
-                  keyField='id'
-                  data={ this.state.userTable }
-                  columns ={this.state.columns}
-                  selectRow = { selectRow }
-                  filter={ filterFactory() }
-                  pagination={ paginationFactory() }/>
+                <RemoteAll
+                  data={ this.state.data }
+                  page={ this.state.page }
+                  sizePerPage={ this.state.sizePerPage }
+                  totalSize={ this.state.totalSize }
+                  onTableChange={ this.handleTableChange }
+                  selectRow={ selectRow }
+                  afterSaveCell={ this.updateUserTable }
+                  columns={ this.state.columns }
+                />
               </div>
             </Col>
           </Row>
