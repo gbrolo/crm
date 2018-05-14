@@ -8,6 +8,7 @@ import qs from 'qs'
 import NavBar from './Navigation/NavBar';
 import Dashboard from './Screens/Dashboard';
 import AddClient from './Screens/Client/AddClient';
+import AddProject from './Screens/Project/AddProject';
 import UpdateClient from './Screens/Client/UpdateClient';
 import ShowClients from './Screens/Info/ShowClients';
 import ShowCatalogue from './Screens/Info/ShowCatalogue';
@@ -37,6 +38,7 @@ const Main = () => (
     <Switch>
       <Route exact path='/dashboard' render={() => (<Dashboard />)} />
       <Route path='/dashboard/clients/add' render={() => (<AddClient />)} />
+      <Route path='/dashboard/project/add' render={() => (<AddProject />)} />
       <Route path='/dashboard/clients/update' render={() => (<UpdateClient />)} />
       <Route path='/dashboard/info/show/clients' render={() => (<ShowClients />)} />
       <Route path='/dashboard/info/show/catalogue' render={() => (<ShowCatalogue />)} />

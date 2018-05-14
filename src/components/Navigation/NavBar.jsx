@@ -46,11 +46,10 @@ class NavBar extends Component {
           </Dropdown>
           <Dropdown>
             <DropdownTrigger>
-              <li><i className="fa fa-address-card" aria-hidden="true"></i> Social</li>
+              <li><i className="fa fa-address-card" aria-hidden="true"></i> Projects</li>
             </DropdownTrigger>
             <DropdownContent>
-              <li id="dropdown"><i className="fa fa-twitter" aria-hidden="true"></i><Link to='/dashboard/social/clients-twitter'> Clients Twitter Info</Link></li>
-              <li id="dropdown"><i className="fa fa-search" aria-hidden="true"></i><Link to='/dashboard/social/search'> Search</Link></li>
+              <li id="dropdown"><i className="fa fa-briefcase" aria-hidden="true"></i><Link to='/dashboard/project/add'> Add Project</Link></li>            
             </DropdownContent>
           </Dropdown>
         </ul>

@@ -17,15 +17,31 @@ class ClientsTwitterInfo extends Component {
     super(props);
     var twitterInfo = JSON.parse(localStorage.twitterInfo || null) || {};
     localStorage.setItem('twitterInfo', null);
+    var lastTweetsArray = [];
+
+    var i = 0;
+    twitterInfo.lastTweets.forEach(function(element) {
+      var e = {
+        id: i,
+        tweet: element
+      }
+
+      lastTweetsArray.push(e);
+      i = i + 1;
+    });
+
+    console.log('lastTweetsArray', lastTweetsArray);
+
+    localStorage.setItem('twitterInfo', null);
     console.log('twitter info', twitterInfo);
     this.state = {
-      tphotoLink: twitterInfo.tphotoLink,
-      tname: twitterInfo.tname,
-      tfavs: twitterInfo.tfavs,
-      ttweets: twitterInfo.ttweets,
-      tfollowers: twitterInfo.tfollowers,
-      tfollows: twitterInfo.tfollows,
-      tlasttweets: twitterInfo.tlasttweets,
+      tphotoLink: twitterInfo.profilePicture,
+      tname: twitterInfo.userName,
+      tfavs: twitterInfo.favs,
+      ttweets: twitterInfo.totalTweets,
+      tfollowers: twitterInfo.followers,
+      tfollows: twitterInfo.following,
+      tlasttweets: lastTweetsArray,
 
       columns: [{
         dataField: 'id',

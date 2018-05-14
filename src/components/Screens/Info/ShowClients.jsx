@@ -19,33 +19,33 @@ import '../../../styles/_layout.css';
 import '../../../styles/_buttons.css';
 import '../../../styles/_updateclient.css';
 
-const columns =  [{ 
-        dataField: 'id', 
-        text: 'ID' 
-      }, { 
-        dataField: 'name', 
-        text: 'Name', 
-        filter: textFilter() 
-      }, { 
-        dataField: 'email', 
-        text: 'Email', 
-        filter: textFilter({caseSensitive: true}) 
-      }, { 
-        dataField: 'gender', 
-        text: 'Gender', 
-        filter: textFilter({caseSensitive: true}) 
-      }, { 
-        dataField: 'civstate', 
-        text: 'Civil State' 
-      }, { 
-        dataField: 'birthDate', 
-        text: 'Birth Date' 
-      }, { 
-        dataField: 'country', 
-        text: 'Country' 
-      }, { 
-        dataField: 'twitterHandle', 
-        text: 'Twitter Handle' 
+const columns =  [{
+        dataField: 'id',
+        text: 'ID'
+      }, {
+        dataField: 'name',
+        text: 'Name',
+        filter: textFilter()
+      }, {
+        dataField: 'email',
+        text: 'Email',
+        filter: textFilter({caseSensitive: true})
+      }, {
+        dataField: 'gender',
+        text: 'Gender',
+        filter: textFilter({caseSensitive: true})
+      }, {
+        dataField: 'civstate',
+        text: 'Civil State'
+      }, {
+        dataField: 'birthDate',
+        text: 'Birth Date'
+      }, {
+        dataField: 'country',
+        text: 'Country'
+      }, {
+        dataField: 'twitterHandle',
+        text: 'Twitter Handle'
       }]
 
 const RemoteAll = ({data, page, sizePerPage, onTableChange, totalSize, selectRow, afterSaveCell, columns}) => (
@@ -221,7 +221,7 @@ class ShowClients extends Component {
       // cambiar el valor del selectedRowShow
 
 
-      // API REQEUEST, TODO 
+      // API REQEUEST, TODO
       // Concatenate with the real twitter handle, NOTE: @ must be included
       let url = '/twitterprofile?handle=@jorocuva'
       let response = await axios.get(url, {
@@ -230,34 +230,8 @@ class ShowClients extends Component {
 
       // PRINTING Twitter INFO
       console.log('Twitter INFO', response.data.data);
+      localStorage.setItem('twitterInfo', JSON.stringify(response.data.data));
       localStorage.setItem('selectedRowShow', null);
-
-      // luego del request, cambiar los valores del state correspondientes con los resultados del request
-      // y luego guardarlos en un objeto y guardarlo en localStorage
-
-      // el id en esto es un id solo para poder ordenar la tabla y que no truene react, igual se tiene que devolver
-      var lastTweets = [
-        {
-          id: 0,
-          tweet: "example of tweet"
-        },
-        {
-          id: 1,
-          tweet: "other tweet"
-        }
-      ]
-
-      var twitterInfo = {
-        tphotoLink: this.state.tphotoLink,
-        tname: this.state.tname,
-        tfavs: this.state.tfavs,
-        ttweets: this.state.ttweets,
-        tfollowers: this.state.tfollowers,
-        tfollows: this.state.tfollows,
-        tlasttweets: lastTweets,
-      }
-
-      localStorage.setItem('twitterInfo', JSON.stringify(twitterInfo));
 
       // y cambiar el estado de redirect a true:
       this.setState({ redirectToProfile: true });
@@ -270,8 +244,6 @@ class ShowClients extends Component {
   nothing() {
     console.log('no click yet');
   }
-
-
 
   render() {
     const _this = this;
