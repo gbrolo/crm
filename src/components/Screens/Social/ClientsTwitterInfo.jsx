@@ -105,16 +105,12 @@ class ClientsTwitterInfo extends Component {
           headers: {'Authorization': 'Bearer ' + localStorage.getItem('cbm_token')}
         });
 
-        // EL OTRO EJEMPLO
-        url = '/mostusedwords?count=10';
-        let response2 = await axios.get(url, {
-          headers: {'Authorization': 'Bearer ' + localStorage.getItem('cbm_token')}
-        });
+        // Display tweets
+        this.setState({tsearchResult: response.data.data});
         console.log(response.data.data);
-        console.log(response2.data.data);
       }catch(error) {
       }
-      // search tweets here
+
     var x = document.getElementById('tw-results');
     x.style.display = "block";
   }

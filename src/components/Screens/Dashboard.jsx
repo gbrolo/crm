@@ -8,6 +8,7 @@ import ClientsCountries from './_ui_components/dashboard/ClientsCountries';
 
 import '../../styles/_layout.css';
 import '../../styles/_dashboard.css';
+import MostUsedWords from "./_ui_components/dashboard/MostUsedWords";
 
 class Dashboard extends Component {
   constructor(props) {
@@ -24,6 +25,7 @@ class Dashboard extends Component {
         </PageHeader>;
         <UserInfo />
         <ClientsCountries />
+        <MostUsedWords />
       </div>
     )
   }

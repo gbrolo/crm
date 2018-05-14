@@ -33,7 +33,7 @@ class ClientsCountries extends Component {
       this.state.countriesChartData.values = values;
 
       this.setState({
-        countriesChartData: this.state.countriesChartData
+        wordsChartData: this.state.countriesChartData
       });
     }catch(error) {
       console.error(error)
