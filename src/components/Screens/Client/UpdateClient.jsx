@@ -227,6 +227,7 @@ class UpdateClient extends Component {
       totalSize: 0,
       sizePerPage: 25,
       cursor: 0,
+      columnsName: [],
       filters: {},
       columns: columns,
       newColName: '',
@@ -247,10 +248,49 @@ class UpdateClient extends Component {
         totalSize: response.data.count,
         data: response.data.data
       });
+
+      this.fillCustomColumns();
+
     }catch(error) {
       console.error(error);
     }
+  };
+
+  fillCustomColumns = async () => {
+    let columnResponse = await axios.post('/usercolumns');
+    let columnsData = columnResponse.data.data;
+    for (var i = 0; i < columnsData.length; i++) {
+      this.addColumn(columnsData[i].name);
+      let currentRows = this.state.data; 
+      for (var j = 0; j < currentRows.length; j++) {
+        this.state.data[j][columnsData[i].name] = '';
+      }
+      let rows = columnsData[i].rows
+      if (rows) {
+        // Populate the values
+        this.populateRows(rows, columnsData)
+      }
+    }
+    this.setState({
+        columns: this.state.columns,
+        data: this.state.data
+    });
   }
+
+  populateRows = (rows, columnsData) => {
+
+    for (var k = 0; k < rows.length; k++) {
+      let currentRows = this.state.data; 
+      for (var j = 0; j < currentRows.length; j++) {
+        if (currentRows[j].id === rows[k].id) {
+          this.state.data[j][columnsData[k].name] = rows[k].value;
+        }
+      }
+    }
+
+  }
+
+
 
   async refreshTable(page, filters) {
     let url = '/clients?count=25'
@@ -277,6 +317,8 @@ class UpdateClient extends Component {
         }
         return valid;
       });
+      this.fillCustomColumns();
+
       this.setState({
         page: page,
         totalSize: response.data.count,
@@ -321,6 +363,7 @@ class UpdateClient extends Component {
     //console.log('row is', rowToSend);
 
     let updates = this.state.update;
+    console.log(updates);
     try {
       await axios.put('/clients', JSON.stringify(updates), {
         headers: {'Content-Type': 'application/json'}
@@ -419,10 +462,31 @@ class UpdateClient extends Component {
   }
 
   addNewColumn = async () => {
+
+    let data = {
+      columnName: this.state.newColName
+    }
+    try {
+      await axios.post('/addcustomcolumn', qs.stringify(data));
+      this.addColumn(this.state.newColName);
+      this.setState({ columns: this.state.columns });
+    }catch(error) {
+      console.error(error);
+    }
+
+  }
+
+  addColumn = (name) => {
+    for (var i = 0; i < this.state.columns.length; i++) {
+      if (this.state.columns[i].dataField === name) {
+        return;
+      }
+    }
+    this.state.columnsName.push(name);
     this.state.columns.push(
       {
-        dataField: 'test',
-        text: 'testazo',
+        dataField: name,
+        text: name,
         filter: textFilter({caseSensitive: true}),
         validator: (newValue, row, column) => {
           if (newValue === "") {
@@ -432,18 +496,10 @@ class UpdateClient extends Component {
               message: 'Field must not be empty'
             };
           }
-          if (validateEmail(newValue) === false) {
-            alert('Please enter a valid email');
-            return {
-              valid: false,
-              message: 'Please enter a valid email'
-            };
-          }
           return true;
         }
       }
-      )
-    this.setState({ columns: this.state.columns })
+    );
   }
 
   render() {
@@ -553,14 +609,6 @@ class UpdateClient extends Component {
                           <InputGroup className="addclient-form-input-element">
                             <FormControl type="text" placeholder="Name"
                             onChange={(event) => this.setState({ newColName: event.target.value })}
-                            required
-                            />
-                          </InputGroup>
-                       </FormGroup>
-                       <FormGroup>
-                          <InputGroup className="addclient-form-input-element">
-                            <FormControl type="text" placeholder="Type"
-                            onChange={(event) => this.setState({ newColType: event.target.value })}
                             required
                             />
                           </InputGroup>

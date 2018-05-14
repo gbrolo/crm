@@ -86,26 +86,27 @@ class AddProject extends Component {
     senData = async () => {
     const data = {
       name: this.state.name,
-      email: this.state.email,
+      userEmail: this.state.email,
       technology: this.state.technology,
       state: this.state.state,
       startDate: this.state.startDate,
-      deliveryDate: this.state.deliveryDate
+      delivery: this.state.deliveryDate
     };
     try {
       await axios.post('/addproject', qs.stringify(data));
       this.setState({successMsg: 'Succesfully created new project', noError: false});
-      document.getElementById('register-success-msg').style.display = 'block';
+      // document.getElementById('register-success-msg').style.display = 'block';
 
       // Reset all fields
-        document.getElementById('name-input').value = '';
-        document.getElementById('email-input').value = '';
-        document.getElementById('technology-input').value = '';
-        document.getElementById('state-input').value = '';
-        document.getElementById('register-error-msg').style.display = 'none';
-        document.getElementById("alert-addproject").style.display = 'none';
+        // document.getElementById('name-input').value = '';
+        // document.getElementById('email-input').value = '';
+        // document.getElementById('technology-input').value = '';
+        // document.getElementById('state-input').value = '';
+        // document.getElementById('register-error-msg').style.display = 'none';
+        // document.getElementById("alert-addproject").style.display = 'none';
 
     } catch(error) {
+      console.log(error);
       console.log(error.response.text);
       this.setState({errors: error.response.statusText, noError: false});
       document.getElementById('register-error-msg').style.display = 'block';
@@ -186,9 +187,9 @@ class AddProject extends Component {
                      <FormControl componentClass="select" placeholder="Select a state." className="addclient-form-input-control"
                      onChange={(event) => this.onChangeState(event.target.value)}
                      required>
-                        <option value="inactive" >Inactive</option>
-                        <option value="active" >Active</option>
-                        <option value="done" >Done</option>
+                        <option value="Inactive" >Inactive</option>
+                        <option value="Active" >Active</option>
+                        <option value="Done" >Done</option>
                      </FormControl>
                    </InputGroup>
                 </FormGroup>
