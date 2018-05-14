@@ -215,7 +215,6 @@ class ShowClients extends Component {
     var selectedRow = JSON.parse(localStorage.getItem('selectedRowShow'));
     if (selectedRow !== null) {
       var twitterHandle = selectedRow.twitterHandle;
-      console.log(twitterHandle);
       // hacer un request a la api con el twitterHandle que devuelva:
       // foto, nombre, descripcion, #favs, #tweets, #followers, #follows, array con los ultimos 30 tweets
       // cambiar el valor del selectedRowShow
@@ -223,7 +222,7 @@ class ShowClients extends Component {
 
       // API REQEUEST, TODO
       // Concatenate with the real twitter handle, NOTE: @ must be included
-      let url = '/twitterprofile?handle=@jorocuva'
+      let url = '/twitterprofile?handle=' + twitterHandle;
       let response = await axios.get(url, {
         headers: {'Authorization': 'Bearer ' + localStorage.getItem('cbm_token')}
       });
