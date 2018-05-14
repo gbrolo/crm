@@ -14,6 +14,9 @@ import '../../../styles/_layout.css';
 import '../../../styles/_buttons.css';
 import '../../../styles/_updateclient.css';
 
+import axios from '../../Server';
+
+
 const RemoteAll = ({data, onTableChange, afterSaveCell, columns}) => (
   <div>
     <BootstrapTable
@@ -90,14 +93,27 @@ class ClientsTwitterInfo extends Component {
     }
   }
 
-  searchQuery() {
+  async searchQuery() {
       // Get twitter username
       var username = this.state.tname;
       var searchWord = this.state.searchText;
 
       // Query here todo: Get the tweets matching
+      try {
+        let url = '/searchontweets?word='+searchWord+'&twitterUserName='+username;
+        let response = await axios.get(url, {
+          headers: {'Authorization': 'Bearer ' + localStorage.getItem('cbm_token')}
+        });
 
-
+        // EL OTRO EJEMPLO
+        url = '/mostusedwords?count=10';
+        let response2 = await axios.get(url, {
+          headers: {'Authorization': 'Bearer ' + localStorage.getItem('cbm_token')}
+        });
+        console.log(response.data.data);
+        console.log(response2.data.data);
+      }catch(error) {
+      }
       // search tweets here
     var x = document.getElementById('tw-results');
     x.style.display = "block";
