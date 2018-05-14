@@ -8,7 +8,7 @@ import cellEditFactory from 'react-bootstrap-table2-editor';
 import filterFactory, { textFilter, selectFilter, Comparator } from 'react-bootstrap-table2-filter';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import overlayFactory from 'react-bootstrap-table2-overlay';
-import qs from 'qs'
+import qs from 'qs';
 
 
 // Styles
