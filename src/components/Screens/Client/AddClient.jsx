@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router'
 import ReactFlagsSelect from 'react-flags-select';
 import DatePicker from 'react-date-picker';
 import { Button, FormGroup, FormControl, InputGroup, Grid, Row, Col, Alert, PageHeader} from 'react-bootstrap';
@@ -30,7 +31,7 @@ class AddClient extends Component {
       noErrors: true,
       errors: '',
       successMsg: '',
-      showError: false
+      showError: false,
     }
 
 
@@ -120,7 +121,13 @@ class AddClient extends Component {
       await axios.post('/addclient', qs.stringify(data));
       this.setState({successMsg: 'Succesfully created new client', noError: false});
       document.getElementById('register-success-msg').style.display = 'block';
-      connect.refresh(true);
+
+      // Reset all fields
+        document.getElementById('first-name-input').value = '';
+        document.getElementById('last-name-input').value = '';
+        document.getElementById('email-input').value = '';
+        document.getElementById('register-error-msg').style.display = 'none';
+        document.getElementById("alert-addclient").style.display = 'none';
 
     } catch(error) {
       console.log(error.response.text);
@@ -144,8 +151,7 @@ class AddClient extends Component {
   }
 
   render() {
-
-    return (
+      return (
       <div className="layout-scene-wrapper">
       <PageHeader className="layout-pageheader">
         Add Client
@@ -165,7 +171,7 @@ class AddClient extends Component {
                 </div>
                 <FormGroup>
                    <InputGroup className="addclient-form-input-element">
-                     <FormControl type="text" placeholder="Name" className="addclient-form-input-control"
+                     <FormControl type="text" placeholder="Name" className="addclient-form-input-control" id="first-name-input"
                      onChange={(event) => this.onChangeName(event.target.value)}
                      required
                      />
@@ -177,7 +183,7 @@ class AddClient extends Component {
                 </div>
                 <FormGroup>
                    <InputGroup className="addclient-form-input-element">
-                     <FormControl type="text" placeholder="Last Name" className="addclient-form-input-control"
+                     <FormControl type="text" placeholder="Last Name" className="addclient-form-input-control" id="last-name-input"
                      onChange={(event) => this.onChangeLastName(event.target.value)}
                      required
                      />
@@ -189,7 +195,7 @@ class AddClient extends Component {
                 </div>
                 <FormGroup>
                    <InputGroup className="addclient-form-input-element">
-                     <FormControl type="email" placeholder="E-mail" className="addclient-form-input-control"
+                     <FormControl type="email" placeholder="E-mail" className="addclient-form-input-control" id="email-input"
                      onChange={(event) => this.onChangeEmail(event.target.value)}
                      required
                      />
