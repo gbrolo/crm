@@ -227,6 +227,7 @@ class UpdateClient extends Component {
       totalSize: 0,
       sizePerPage: 25,
       cursor: 0,
+      columnsName: [],
       filters: {},
       columns: columns,
       newColName: '',
@@ -260,6 +261,10 @@ class UpdateClient extends Component {
     let columnsData = columnResponse.data.data;
     for (var i = 0; i < columnsData.length; i++) {
       this.addColumn(columnsData[i].name);
+      let currentRows = this.state.data; 
+      for (var j = 0; j < currentRows.length; j++) {
+        this.state.data[j][columnsData[i].name] = '';
+      }
       let rows = columnsData[i].rows
       if (rows) {
         // Populate the values
@@ -312,6 +317,8 @@ class UpdateClient extends Component {
         }
         return valid;
       });
+      this.fillCustomColumns();
+
       this.setState({
         page: page,
         totalSize: response.data.count,
@@ -356,6 +363,7 @@ class UpdateClient extends Component {
     //console.log('row is', rowToSend);
 
     let updates = this.state.update;
+    console.log(updates);
     try {
       await axios.put('/clients', JSON.stringify(updates), {
         headers: {'Content-Type': 'application/json'}
@@ -469,6 +477,12 @@ class UpdateClient extends Component {
   }
 
   addColumn = (name) => {
+    for (var i = 0; i < this.state.columns.length; i++) {
+      if (this.state.columns[i].dataField === name) {
+        return;
+      }
+    }
+    this.state.columnsName.push(name);
     this.state.columns.push(
       {
         dataField: name,
@@ -480,13 +494,6 @@ class UpdateClient extends Component {
             return {
               valid: false,
               message: 'Field must not be empty'
-            };
-          }
-          if (validateEmail(newValue) === false) {
-            alert('Please enter a valid email');
-            return {
-              valid: false,
-              message: 'Please enter a valid email'
             };
           }
           return true;
