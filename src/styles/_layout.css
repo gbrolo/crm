@@ -118,6 +118,16 @@
   color: #fff;
 }
 
+.layout-input-search-container {
+  border-radius: 5px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.layout-tw-results {
+  display: none;
+}
+
 .full-container {
   background: #f0f0f0;
   height: 100%;

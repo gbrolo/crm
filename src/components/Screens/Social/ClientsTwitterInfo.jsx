@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Button, Grid, Row, Col, PageHeader, Image } from 'react-bootstrap';
+import { Button, Grid, Row, Col, PageHeader, Image, FormGroup, FormControl, InputGroup } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 
 import BootstrapTable from 'react-bootstrap-table-next';
 import cellEditFactory from 'react-bootstrap-table2-editor';
 import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
+import overlayFactory from 'react-bootstrap-table2-overlay';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 
 // Styles
@@ -12,23 +14,46 @@ import '../../../styles/_layout.css';
 import '../../../styles/_buttons.css';
 import '../../../styles/_updateclient.css';
 
+const RemoteAll = ({data, onTableChange, afterSaveCell, columns}) => (
+  <div>
+    <BootstrapTable
+      striped
+      hover
+      condensed
+      keyField="id"
+      data={ data }
+      columns={ columns }
+      pagination={ paginationFactory() }
+      onTableChange={ onTableChange }
+      overlay={ overlayFactory({ spinner: true, background: 'rgba(192,192,192,0.3)' }) }
+    />
+  </div>
+);
+
+RemoteAll.propTypes = {
+  data: PropTypes.array.isRequired,
+  onTableChange: PropTypes.func.isRequired
+};
+
 class ClientsTwitterInfo extends Component {
   constructor(props) {
     super(props);
     var twitterInfo = JSON.parse(localStorage.twitterInfo || null) || {};
-    localStorage.setItem('twitterInfo', null);
+    //localStorage.setItem('twitterInfo', null);
     var lastTweetsArray = [];
 
-    var i = 0;
-    twitterInfo.lastTweets.forEach(function(element) {
-      var e = {
-        id: i,
-        tweet: element
-      }
+    if (!twitterInfo == null) {
+      var i = 0;
+      twitterInfo.lastTweets.forEach(function(element) {
+        var e = {
+          id: i,
+          tweet: element
+        }
 
-      lastTweetsArray.push(e);
-      i = i + 1;
-    });
+        lastTweetsArray.push(e);
+        i = i + 1;
+      });
+    }
 
     console.log('lastTweetsArray', lastTweetsArray);
 
@@ -43,6 +68,9 @@ class ClientsTwitterInfo extends Component {
       tfollows: twitterInfo.following,
       tlasttweets: lastTweetsArray,
 
+      searchText: '',
+      tsearchResult: [],
+
       columns: [{
         dataField: 'id',
         text: 'id',
@@ -52,7 +80,26 @@ class ClientsTwitterInfo extends Component {
         text: 'Tweets',
         filter: textFilter()
       }],
+
+      searchResultCols: [{
+        dataField: 'id',
+        text: 'id',
+        hidden: true
+      },{
+        dataField: 'tweet',
+        text: 'Tweets'
+      }],
     }
+  }
+
+  searchQuery() {
+    // search tweets here
+    var x = document.getElementById('tw-results');
+    x.style.display = "block";
+  }
+
+  async refreshTable() {
+    // request and change state
   }
 
   render() {
@@ -129,6 +176,31 @@ class ClientsTwitterInfo extends Component {
                   columns ={this.state.columns}
                   filter={ filterFactory() }
                   pagination={ paginationFactory() }/>
+
+                  <div className="layout-input-search-container">
+                    <div className="updateclient-instr-title">
+                      <b>Search tweets:</b>
+                      <hr />
+                    </div>
+                    <FormGroup>
+                       <InputGroup>
+                         <FormControl type="text" placeholder="Search tweets here"
+                         onChange={(event) => this.setState({searchText: event.target.value})}
+                         required/>
+                         <InputGroup.Button>
+                            <Button onClick={() => this.searchQuery()}><b>Search</b></Button>
+                         </InputGroup.Button>
+                       </InputGroup>
+                    </FormGroup>
+                  </div>
+
+                  <div className="layout-tw-results" id="tw-results">
+                    <RemoteAll
+                      data={ this.state.tsearchResult }
+                      onTableChange={ this.refreshTable }
+                      columns={ this.state.searchResultCols }
+                    />
+                  </div>
               </div>
             </Col>
           </Row>
