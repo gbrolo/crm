@@ -13,10 +13,6 @@ class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      sexChartData: {
-        label: 'Client sex distribution',
-        values: [{x: 'Men', y: 60}, {x: 'Women', y: 40}]
-      }
     }
   }
 
