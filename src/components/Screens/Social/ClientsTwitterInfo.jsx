@@ -42,18 +42,16 @@ class ClientsTwitterInfo extends Component {
     //localStorage.setItem('twitterInfo', null);
     var lastTweetsArray = [];
 
-    if (!twitterInfo == null) {
-      var i = 0;
-      twitterInfo.lastTweets.forEach(function(element) {
-        var e = {
-          id: i,
-          tweet: element
-        }
+    var i = 0;
+    twitterInfo.lastTweets.forEach(function(element) {
+      var e = {
+        id: i,
+        tweet: element
+      }
 
-        lastTweetsArray.push(e);
-        i = i + 1;
-      });
-    }
+      lastTweetsArray.push(e);
+      i = i + 1;
+    });
 
     console.log('lastTweetsArray', lastTweetsArray);
 
