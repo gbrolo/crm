@@ -143,6 +143,57 @@ class ShowCatalogue extends Component {
     }
   }
 
+  convertArrayOfObjectsToCSV(args) {
+    var result, ctr, keys, columnDelimiter, lineDelimiter, data;
+
+    data = args.data || null;
+    if (data == null || !data.length) {
+      return null;
+    }
+
+    columnDelimiter = args.columnDelimiter || ',';
+    lineDelimiter = args.lineDelimiter || '\n';
+
+    keys = Object.keys(data[0]);
+
+    result = '';
+    result += keys.join(columnDelimiter);
+    result += lineDelimiter;
+
+    data.forEach(function(item) {
+      ctr = 0;
+      keys.forEach(function(key) {
+        if (ctr > 0) result += columnDelimiter;
+
+        result += item[key];
+        ctr++;
+      });
+      result += lineDelimiter;
+    });
+
+    return result;
+  }
+
+  downloadCSV(args) {
+    var data, filename, link;
+    var csv = this.convertArrayOfObjectsToCSV({
+      data: args.dataTable
+    });
+    if (csv == null) return;
+
+    filename = args.filename || 'export.csv';
+
+    if (!csv.match(/^data:text\/csv/i)) {
+      csv = 'data:text/csv;charset=utf-8,' + csv;
+    }
+    data = encodeURI(csv);
+
+    link = document.createElement('a');
+    link.setAttribute('href', data);
+    link.setAttribute('download', filename);
+    link.click();
+  }
+
   render() {
     return (
       <div className="layout-scene-wrapper">
@@ -207,6 +258,17 @@ class ShowCatalogue extends Component {
                   <b>Table 1:</b>
                   <hr id="cat"/>
                 </div>
+                <div className="updateclient-buttons-container">
+                  <div className="updateclient-buttons-container" id="left">
+                     <Button
+                        bsStyle="success"
+                        className="button-size button-override-font"
+                        onClick={ () => this.downloadCSV({ filename: "catalogue_1.csv", dataTable: this.state.firstTable}) }
+                        block>
+                          Generate Report
+                      </Button>
+                  </div>
+                </div>
                 <BootstrapTable
                   striped
                   hover
@@ -228,6 +290,17 @@ class ShowCatalogue extends Component {
                 <div className="updateclient-instr-title">
                   <b>Table 2:</b>
                   <hr id="cat"/>
+                </div>
+                <div className="updateclient-buttons-container">
+                  <div className="updateclient-buttons-container" id="left">
+                     <Button
+                        bsStyle="success"
+                        className="button-size button-override-font"
+                        onClick={ () => this.downloadCSV({ filename: "catalogue_2.csv", dataTable: this.state.secondTable}) }
+                        block>
+                          Generate Report
+                      </Button>
+                  </div>
                 </div>
                 <BootstrapTable
                   striped
@@ -251,6 +324,17 @@ class ShowCatalogue extends Component {
                   <b>Table 3:</b>
                   <hr id="cat"/>
                 </div>
+                <div className="updateclient-buttons-container">
+                  <div className="updateclient-buttons-container" id="left">
+                     <Button
+                        bsStyle="success"
+                        className="button-size button-override-font"
+                        onClick={ () => this.downloadCSV({ filename: "catalogue_3.csv", dataTable: this.state.thirdTable}) }
+                        block>
+                          Generate Report
+                      </Button>
+                  </div>
+                </div>
                 <BootstrapTable
                   striped
                   hover
@@ -272,6 +356,17 @@ class ShowCatalogue extends Component {
                 <div className="updateclient-instr-title">
                   <b>Table 4:</b>
                   <hr id="cat"/>
+                </div>
+                <div className="updateclient-buttons-container">
+                  <div className="updateclient-buttons-container" id="left">
+                     <Button
+                        bsStyle="success"
+                        className="button-size button-override-font"
+                        onClick={ () => this.downloadCSV({ filename: "catalogue_4.csv", dataTable: this.state.fourthTable}) }
+                        block>
+                          Generate Report
+                      </Button>
+                  </div>
                 </div>
                 <BootstrapTable
                   striped

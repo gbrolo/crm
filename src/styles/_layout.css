@@ -128,6 +128,20 @@
   display: none;
 }
 
+.clients-table-container {
+  padding: 20px;
+}
+
+.clients-table-container-title {
+  text-align: justify;
+  text-transform: uppercase;
+  font-size: 1.5em;
+  padding: 0;
+  margin-bottom: 20px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .full-container {
   background: #f0f0f0;
   height: 100%;
