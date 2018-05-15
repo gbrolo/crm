@@ -98,7 +98,7 @@ class ClientsTwitterInfo extends Component {
       var username = this.state.tname;
       var searchWord = this.state.searchText;
 
-      // Query here todo: Get the tweets matching
+      // Query here
       try {
         let url = '/searchontweets?word='+searchWord+'&twitterUserName='+username;
         let response = await axios.get(url, {
@@ -106,8 +106,20 @@ class ClientsTwitterInfo extends Component {
         });
 
         // Display tweets
-        this.setState({tsearchResult: response.data.data});
-        console.log(response.data.data);
+        var lastTweetsArray = [];
+        var i = 0;
+        response.data.data.forEach(function(element) {
+            var e = {
+                id: i,
+                tweet: element
+            };
+
+            lastTweetsArray.push(e);
+            i = i + 1;
+        });
+
+        this.setState({tsearchResult: lastTweetsArray});
+
       }catch(error) {
       }
 
