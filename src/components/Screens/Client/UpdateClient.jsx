@@ -88,10 +88,10 @@ const columns =  [{
           message: 'Field must not be empty'
         };
       }
-      if (newValue.toLowerCase() === "m" || newValue.toLowerCase() === "f") {
+      if (newValue === "Male" || newValue === "Female" || newValue === "Other") {
         // do nothing
       } else {
-        alert('Only valid inputs are M for male and F for female');
+        alert('Only valid inputs are Male, Other and Female');
         return {
           valid: false,
           message: 'Only valid inputs are M for male and F for female'

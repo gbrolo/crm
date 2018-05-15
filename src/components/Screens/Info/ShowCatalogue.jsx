@@ -409,7 +409,9 @@ class ShowCatalogue extends Component {
   }
 
   downloadCSV(args) {
+
     var data, filename, link;
+    console.log('args', args.dataTable);
     var csv = this.convertArrayOfObjectsToCSV({
       data: args.dataTable
     });
@@ -426,6 +428,7 @@ class ShowCatalogue extends Component {
     link.setAttribute('href', data);
     link.setAttribute('download', filename);
     link.click();
+
   }
 
   printReport(div) {

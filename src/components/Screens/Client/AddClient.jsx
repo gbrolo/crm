@@ -118,6 +118,7 @@ class AddClient extends Component {
       twitterHandle: this.state.twitter
     };
     try {
+      console.log(data);
       await axios.post('/addclient', qs.stringify(data));
       this.setState({successMsg: 'Succesfully created new client', noError: false});
       document.getElementById('register-success-msg').style.display = 'block';
