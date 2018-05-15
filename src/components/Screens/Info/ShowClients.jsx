@@ -300,7 +300,7 @@ class ShowClients extends Component {
                   <hr />
                 </div>
                 <div className="updateclient-instr-text">
-                  You can <b> generate your report </b> by using the button <b>GENERATE REPORT</b> or <b>GENERATE PDF REPORT</b>.
+                  You can <b> generate your report </b> by using the button <b>GENERATE REPORT (CSV)</b> or <b>GENERATE PDF REPORT</b>.
                 </div>
               </div>
             </Col>
@@ -317,7 +317,7 @@ class ShowClients extends Component {
                         className="button-size button-override-font"
                         onClick={ () => this.downloadCSV({ filename: "clients.csv" }) }
                         block>
-                          Generate Report
+                          Generate Report (CSV)
                       </Button>
                   </div>
                   <div className="updateclient-buttons-container" id="right">

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Button, Grid, Row, Col, Tab, Nav, NavItem, PageHeader } from 'react-bootstrap';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 import BootstrapTable from 'react-bootstrap-table-next';
 import cellEditFactory from 'react-bootstrap-table2-editor';
@@ -17,10 +19,6 @@ import '../../../styles/_updateclient.css';
 
 
 import axios from '../../Server';
-
-
-
-
 
 const RemoteAll = ({data, page, sizePerPage, onTableChange, totalSize, columns}) => (
   <div>
@@ -148,7 +146,7 @@ class ShowCatalogue extends Component {
 
     }catch(error) {
       console.error(error);
-    } 
+    }
   };
 
   initCountryTable = async () => {
@@ -165,7 +163,7 @@ class ShowCatalogue extends Component {
 
     }catch(error) {
       console.error(error);
-    } 
+    }
   };
 
   initCivilStateTable = async () => {
@@ -182,12 +180,8 @@ class ShowCatalogue extends Component {
 
     }catch(error) {
       console.error(error);
-    } 
+    }
   };
-
-
-
-
 
   async refreshProjects(page, filters) {
     let url = '/projects?count=200'
@@ -354,8 +348,6 @@ class ShowCatalogue extends Component {
     this.refreshCivilStates(page, filters);
   }
 
-
-
   showTable(toShow) {
     var cat1 = document.getElementById("cat-1");
     var cat2 = document.getElementById("cat-2");
@@ -436,6 +428,20 @@ class ShowCatalogue extends Component {
     link.click();
   }
 
+  printReport(div) {
+    var input = document.getElementById(div);
+    html2canvas(input)
+      .then((canvas) => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF({ orientation: 'landscape'});
+        pdf.addImage(imgData, 'JPEG', 0, 0);
+        // pdf.output('dataurlnewwindow');
+        var n = div + ".pdf"
+        pdf.save(n);
+      })
+    ;
+  }
+
   render() {
     return (
       <div className="layout-scene-wrapper">
@@ -500,7 +506,6 @@ class ShowCatalogue extends Component {
                   <b>Projects :</b>
                   <hr id="cat"/>
                 </div>
-<<<<<<< HEAD
                 <div className="updateclient-buttons-container">
                   <div className="updateclient-buttons-container" id="left">
                      <Button
@@ -511,22 +516,22 @@ class ShowCatalogue extends Component {
                           Generate Report
                       </Button>
                   </div>
+                  <div className="updateclient-buttons-container" id="right">
+                     <Button bsStyle="danger"
+                     className="button-size button-override-font" onClick={ () => this.printReport('projects-cat') } block>Generate PDF Report</Button>
+                  </div>
                 </div>
-                <BootstrapTable
-                  striped
-                  hover
-                  condensed
-                  keyField='id'
-=======
-                <RemoteAll
->>>>>>> 11a774d042e2beefff01734592eba4752c99c4e4
-                  data={ this.state.firstTable }
-                  page={ this.state.firstPage }
-                  sizePerPage={ this.state.sizePerPage }
-                  totalSize={ this.state.firstTotalSize }
-                  onTableChange={ this.handleProjectTable }
-                  columns={ this.state.firstColumns }
-                />
+
+                <div className="clients-table-container" id="projects-cat">
+                  <RemoteAll
+                    data={ this.state.firstTable }
+                    page={ this.state.firstPage }
+                    sizePerPage={ this.state.sizePerPage }
+                    totalSize={ this.state.firstTotalSize }
+                    onTableChange={ this.handleProjectTable }
+                    columns={ this.state.firstColumns }
+                  />
+                  </div>
                 </div>
             </Col>
           </Row>
@@ -540,7 +545,6 @@ class ShowCatalogue extends Component {
                   <b>Gender :</b>
                   <hr id="cat"/>
                 </div>
-<<<<<<< HEAD
                 <div className="updateclient-buttons-container">
                   <div className="updateclient-buttons-container" id="left">
                      <Button
@@ -551,17 +555,14 @@ class ShowCatalogue extends Component {
                           Generate Report
                       </Button>
                   </div>
+                  <div className="updateclient-buttons-container" id="right">
+                     <Button bsStyle="danger"
+                     className="button-size button-override-font" onClick={ () => this.printReport('gender-cat') } block>Generate PDF Report</Button>
+                  </div>
                 </div>
-                <BootstrapTable
-                  striped
-                  hover
-                  condensed
-                  keyField='id'
-                  data={ this.state.secondTable }
-                  columns ={this.state.secondColumns}
-                  filter={ filterFactory() }
-                  pagination={ paginationFactory() }/>
-=======
+
+                <div className="clients-table-container" id="gender-cat">
+
                 <RemoteAll
                   data={ this.state.secondTable}
                   page={ this.state.secondPage}
@@ -570,7 +571,7 @@ class ShowCatalogue extends Component {
                   onTableChange={ this.handleGenderTable }
                   columns={ this.state.secondColumns }
                 />
->>>>>>> 11a774d042e2beefff01734592eba4752c99c4e4
+                </div>
               </div>
             </Col>
           </Row>
@@ -584,7 +585,6 @@ class ShowCatalogue extends Component {
                   <b>Country:</b>
                   <hr id="cat"/>
                 </div>
-<<<<<<< HEAD
                 <div className="updateclient-buttons-container">
                   <div className="updateclient-buttons-container" id="left">
                      <Button
@@ -595,17 +595,14 @@ class ShowCatalogue extends Component {
                           Generate Report
                       </Button>
                   </div>
+                  <div className="updateclient-buttons-container" id="right">
+                     <Button bsStyle="danger"
+                     className="button-size button-override-font" onClick={ () => this.printReport('country-cat') } block>Generate PDF Report</Button>
+                  </div>
                 </div>
-                <BootstrapTable
-                  striped
-                  hover
-                  condensed
-                  keyField='id'
-                  data={ this.state.thirdTable }
-                  columns ={this.state.thirdColumns}
-                  filter={ filterFactory() }
-                  pagination={ paginationFactory() }/>
-=======
+
+                <div className="clients-table-container" id="country-cat">
+
                 <RemoteAll
                   data={ this.state.thirdTable}
                   page={ this.state.thirdPage}
@@ -614,7 +611,7 @@ class ShowCatalogue extends Component {
                   onTableChange={ this.handleCountryTable}
                   columns={ this.state.thirdColumns}
                 />
->>>>>>> 11a774d042e2beefff01734592eba4752c99c4e4
+                </div>
               </div>
             </Col>
           </Row>
@@ -625,10 +622,9 @@ class ShowCatalogue extends Component {
             <Col xs={6} sm={6} md={6} lg={12}>
               <div className="updateclient-tablecontainer">
                 <div className="updateclient-instr-title">
-                  <b>Country:</b>
+                  <b>Civil State:</b>
                   <hr id="cat"/>
                 </div>
-<<<<<<< HEAD
                 <div className="updateclient-buttons-container">
                   <div className="updateclient-buttons-container" id="left">
                      <Button
@@ -639,17 +635,13 @@ class ShowCatalogue extends Component {
                           Generate Report
                       </Button>
                   </div>
+                  <div className="updateclient-buttons-container" id="right">
+                     <Button bsStyle="danger"
+                     className="button-size button-override-font" onClick={ () => this.printReport('civstate-cat') } block>Generate PDF Report</Button>
+                  </div>
                 </div>
-                <BootstrapTable
-                  striped
-                  hover
-                  condensed
-                  keyField='id'
-                  data={ this.state.fourthTable }
-                  columns ={this.state.fourthColumns}
-                  filter={ filterFactory() }
-                  pagination={ paginationFactory() }/>
-=======
+
+                <div className="clients-table-container" id="civstate-cat">
                 <RemoteAll
                   data={ this.state.fourthTable}
                   page={ this.state.fourthPage}
@@ -658,7 +650,7 @@ class ShowCatalogue extends Component {
                   onTableChange={ this.handleCivilStateTable}
                   columns={ this.state.fourthColumns}
                 />
->>>>>>> 11a774d042e2beefff01734592eba4752c99c4e4
+              </div>
               </div>
             </Col>
           </Row>

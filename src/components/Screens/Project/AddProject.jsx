@@ -156,11 +156,11 @@ class AddProject extends Component {
                 </FormGroup>
 
                 <div className="addclient-form-input">
-                  eMail
+                  Owners eMail
                 </div>
                 <FormGroup>
                    <InputGroup className="addclient-form-input-element">
-                     <FormControl type="text" placeholder="eMail" className="addclient-form-input-control" id="email-input"
+                     <FormControl type="text" placeholder="Owners eMail" className="addclient-form-input-control" id="email-input"
                      onChange={(event) => this.onChangeEmail(event.target.value)}
                      required
                      />
