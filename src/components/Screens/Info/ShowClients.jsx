@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { Button, Grid, Row, Col, PageHeader } from 'react-bootstrap';
 import { Redirect } from 'react-router'
 import PropTypes from 'prop-types';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 import BootstrapTable from 'react-bootstrap-table-next';
 import cellEditFactory from 'react-bootstrap-table2-editor';
@@ -194,7 +196,7 @@ class ShowClients extends Component {
   downloadCSV(args) {
     var data, filename, link;
     var csv = this.convertArrayOfObjectsToCSV({
-      data: this.state.userTable
+      data: this.state.data
     });
     if (csv == null) return;
 
@@ -245,6 +247,19 @@ class ShowClients extends Component {
     console.log('no click yet');
   }
 
+  printReport() {
+    var input = document.getElementById('clients-table-container');
+    html2canvas(input)
+      .then((canvas) => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF({ orientation: 'landscape'});
+        pdf.addImage(imgData, 'JPEG', 0, 0);
+        // pdf.output('dataurlnewwindow');
+        pdf.save("clients_report.pdf");
+      })
+    ;
+  }
+
   render() {
     const _this = this;
     const selectRow ={
@@ -285,7 +300,7 @@ class ShowClients extends Component {
                   <hr />
                 </div>
                 <div className="updateclient-instr-text">
-                  You can <b> export your data to a CSV file </b> using the button <b>EXPORT CSV</b>.
+                  You can <b> generate your report </b> by using the button <b>GENERATE REPORT</b> or <b>GENERATE PDF REPORT</b>.
                 </div>
               </div>
             </Col>
@@ -302,8 +317,12 @@ class ShowClients extends Component {
                         className="button-size button-override-font"
                         onClick={ () => this.downloadCSV({ filename: "clients.csv" }) }
                         block>
-                          Export CSV
+                          Generate Report
                       </Button>
+                  </div>
+                  <div className="updateclient-buttons-container" id="right">
+                     <Button bsStyle="danger"
+                     className="button-size button-override-font" onClick={ () => this.printReport() } block>Generate PDF Report</Button>
                   </div>
                   <div className="updateclient-buttons-container" id="right">
                      <Button
@@ -318,16 +337,22 @@ class ShowClients extends Component {
                   </div>
                 </div>
 
-                <RemoteAll
-                  data={ this.state.data }
-                  page={ this.state.page }
-                  sizePerPage={ this.state.sizePerPage }
-                  totalSize={ this.state.totalSize }
-                  onTableChange={ this.handleTableChange }
-                  selectRow={ selectRow }
-                  afterSaveCell={ this.updateUserTable }
-                  columns={ this.state.columns }
-                />
+                <div className="clients-table-container" id="clients-table-container">
+                  <div className="clients-table-container-title">
+                    <b>Clients:</b>
+                    <hr />
+                  </div>
+                  <RemoteAll
+                    data={ this.state.data }
+                    page={ this.state.page }
+                    sizePerPage={ this.state.sizePerPage }
+                    totalSize={ this.state.totalSize }
+                    onTableChange={ this.handleTableChange }
+                    selectRow={ selectRow }
+                    afterSaveCell={ this.updateUserTable }
+                    columns={ this.state.columns }
+                  />
+                </div>
               </div>
             </Col>
           </Row>
